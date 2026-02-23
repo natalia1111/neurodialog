@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Аудиоконтент - НейроДиалог</title>
+<style>
+
+@keyframes blink {
+  0%   { color: #000; }
+  50%  { color: #ff0000; }
+  100% { color: #000; }
+}
+
+.page {
+  display: none;
+  max-width: 1200px;
+  margin: 0 auto;          /* центрируем */
+  min-height: 700px;       /* одинаковая высота */
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.page.active {
+  display: block;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;       /* одинаковое выравнивание */
+}
+
+.column {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;       /* центрируем содержимое */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+img {
+  max-width: 100%;          /* все картинки одинаково вписываются */
+  height: auto;
+  display: block;
+  margin: 0 auto;           /* центрируем картинку */
+}
+
+
+img { 
+max-width: 100%; 
+height: auto; 
+display: block; 
+}
+
+
+/* Карточки с картинками */
+.image-card {
+  text-align: center;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.image-card img {
+  display: block;
+  margin: 0 auto 10px;
+  max-width: 100%;
+  height: auto;
+}
+
+.image-card p {
+  font-weight: normal;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.info-list {
+  text-align: center;
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+* {
+ margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Segoe UI', Arial, sans-serif;
+background: #f5f5f5;
+min-height: 100vh;
+padding: 20px;
+}
+
+.page {
+  display: none;
+  max-width: 1200px;
+  margin: 0 auto;
+min-height: 700px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.page.active {
+  display: block;
+}
+
+/* Две колонки */ 
+.two-columns 
+{ display: grid; 
+grid-template-columns: 
+1fr 1fr; gap: 30px; 
+}
+
+
+.container {
+border: 3px dashed #7c4dff;
+border-radius: 20px;
+padding: 40px;
+background: white;
+min-height: 500px;
+}
+
+/* Сообщения чата */
+.msg-teacher {
+background: #e8e0f0;
+border-radius: 15px;
+padding: 15px 20px;
+margin-bottom: 15px;
+max-width: 90%;
+}
+
+.msg-teacher .label {
+color: #7c4dff;
+font-weight: bold;
+}
+
+.msg-teacher .label-bold {
+font-weight: bold;
+}
+
+.msg-ai {
+background: #fff3cd;
+border-radius: 15px;
+padding: 15px 20px;
+margin-bottom: 15px;
+max-width: 90%;
+}
+
+.msg-ai .label {
+color: #f5a623;
+ font-weight: bold;
+}
+
+/* Кнопки выбора с иконкой */
+.choice-buttons {
+display: flex;
+flex-direction: column;
+gap: 20px;
+margin-top: 30px;
+margin-left: 40px;
+position: relative;
+}
+
+.choice-btn {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+padding: 12px 25px;
+border-radius: 25px;
+text-decoration: none;
+color: white;
+font-size: 16px;
+transition: transform 0.2s, box-shadow 0.2s;
+width: 100%;
+max-width: 524px;
+}
+
+.choice-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+ .choice-btn.purple { background: #9b7fdb; }
+ .choice-btn.green { background: #5fc3a0; }
+.choice-btn.yellow { background: #f5c842; color: #333; }
+.choice-btn.gray { background: #888; }
+
+.choice-icon {
+width: 30px;
+height: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+
+/* Контейнер для кнопок в одну линию */ .buttons-row { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; /* адаптивность: кнопки переносятся на новую строку на узких экранах */ }
+
+ /* Кнопка продолжения */
+.continue-btn {
+display: inline-block;
+ padding: 10px 25px;
+ background: #9b7fdb;
+color: white;
+ text-decoration: none;
+border-radius: 5px;
+margin-top: 20px;
+transition: background 0.2s;
+}
+
+.continue-btn:hover {
+ background: #7c4dff;
+ }
+
+  .continue-wrapper {
+     display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+ }
+
+     /* Изображения */
+       .images-row {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        margin: 30px 0;
+        flex-wrap: wrap;
+     }
+/* Картинки адаптивные */ img { max-width: 100%; height: auto; display: block; }
+        .image-card {
+           text-align: center;
+        }
+
+        .image-card img {
+             max-width: 350px;
+             width: 100%;
+             border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .image-card p {
+           margin-top: 10px;
+            font-weight: bold;
+           color: #333;
+       }
+
+        /* Облачко с текстом */
+       .speech-bubble {
+            background: white;
+            border: 2px solid #333;
+             border-radius: 15px;
+             padding: 15px 25px;
+            margin: 20px 0;
+           position: relative;
+          max-width: 600px;
+       }
+
+       .speech-bubble::before {
+           content: '';
+          position: absolute;
+     bottom: -15px;
+            left: 30px;
+ border-width: 15px 10px 0;
+ border-style: solid;
+  border-color: #333 transparent transparent;
+      }
+
+       .speech-bubble::after {
+         content: '';
+            position: absolute;
+           bottom: -12px;
+            left: 32px;
+            border-width: 12px 8px 0;
+           border-style: solid;
+           border-color: white transparent transparent;
+       }
+
+       /* Скриншот TTS */
+        .tts-screenshot {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+         padding: 20px;
+         margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+       .tts-header {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+         }
+
+        .tts-title {
+             color: #00b894;
+             font-size: 18px;
+           font-weight: bold;
+         }
+
+        .tts-links {
+            color: #00b894;
+            font-size: 14px;
+        }
+
+       .tts-subtitle {
+           color: #333;
+           font-weight: bold;
+            margin-bottom: 15px;
+      }
+
+        .tts-tabs {
+             display: flex;
+             gap: 15px;
+             margin-bottom: 10px;
+       }
+
+        .tts-tab {
+           color: #00b894;
+           cursor: pointer;
+       }
+
+        .tts-textarea {
+            width: 100%;
+           min-height: 150px;
+            border: 1px solid #ddd;
+           border-radius: 5px;
+            padding: 15px;
+           font-size: 14px;
+           line-height: 1.6;
+          resize: vertical;
+          margin-bottom: 10px;
+       }
+
+      .tts-stats {
+           text-align: right;
+           color: #999;
+           font-size: 12px;
+           margin-bottom: 15px;
+         }
+
+        .tts-controls {
+         display: grid;
+         grid-template-columns: repeat(2, 1fr);
+           gap: 15px;
+        margin-bottom: 20px;
+     }
+
+    .tts-control-row {
+        display: flex;
+             align-items: center;
+            gap: 10px;
+           background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            flex-wrap: wrap;
+      }
+
+        .tts-control-label {
+             min-width: 80px;
+             color: #666;
+        }
+
+        .tts-control-value {
+          padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+           background: white;
+           word-break: break-word;
+        }
+
+         .tts-buttons {
+            display: flex;
+             gap: 10px;
+             flex-wrap: wrap;
+      }
+
+       .tts-btn {
+             padding: 10px 20px;
+           border: none;
+           border-radius: 5px;
+        cursor: pointer;
+          font-size: 14px;
+           display: flex;
+          align-items: center;
+        gap: 5px;
+      }
+
+       .tts-btn.green {
+           background: #00b894;
+         color: white;
+       }
+
+         .tts-btn.blue {
+             background: #0984e3;
+          color: white;
+        }
+
+       /* Заголовок слайда */
+      .slide-title {
+         text-align: center;
+font-size: 2.5em;
+ color: #333;
+        margin-bottom: 30px;
+    }
+
+     /* Список */
+      .info-list {
+            margin: 15px 0;
+           padding-left: 25px;
+       }
+
+       .info-list li {
+            margin-bottom: 8px;
+          line-height: 1.5;
+        }
+
+        /* Блок с текстом для копирования */
+        .copy-block {
+             display: flex;
+           gap: 20px;
+        align-items: flex-start;
+           margin: 20px 0;
+             padding: 20px;
+            background: #fff9e6;
+            border-radius: 15px;
+             border-left: 4px solid #f5a623;
+             flex-wrap: wrap;
+       }
+
+        .copy-icon {
+            width: 40px;
+           height: 40px;
+            border: 2px solid #ff6b6b;
+            border-radius: 5px;
+          display: flex;
+          align-items: center;
+           justify-content: center;
+          flex-shrink: 0;
+      }
+
+        .copy-text {
+            flex: 1;
+            min-width: 200px;
+       }
+
+        .copy-hint {
+         color: #ff6b6b;
+            font-size: 12px;
+             margin-bottom: 5px;
+         }
+
+         /* Карточка ссылки */
+         .link-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+             padding: 15px;
+            max-width: 300px;
+            width: 100%;
+       }
+
+       .link-card-title {
+            font-weight: bold;
+             margin-bottom: 5px;
+       }
+
+        .link-card-desc {
+            font-size: 12px;
+             color: #666;
+             margin-bottom: 5px;
+        }
+
+       .link-card-url {
+             font-size: 11px;
+           color: #00b894;
+       }
+
+       /* Аннотации на скриншоте */
+        .annotation {
+            display: flex;
+             align-items: center;
+             gap: 10px;
+            margin: 5px 0;
+       }
+
+       .annotation-arrow {
+          color: #7c4dff;
+           font-size: 20px;
+         }
+
+         .annotation-text {
+            color: #7c4dff;
+            font-size: 14px;
+      }
+
+         /* Кнопка послушать */
+         .listen-btn {
+            display: inline-flex;
+             align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: #333;
+             color: white;
+             border: none;
+             border-radius: 25px;
+            cursor: pointer;
+           font-size: 16px;
+        }
+
+.speaker-icon {
+           font-size: 24px;
+       }
+
+        /* Кнопка На главную */
+       .home-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #7c4dff;
+           color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+        }
+
+         .home-btn:hover {
+            background: #6b3fe0;
+      }
+
+        /* Фиксированная кнопка На главную в левом нижнем углу */
+        .home-btn-fixed {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: none;
+            padding: 12px 30px;
+            background: #7c4dff;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .page.active .home-btn-fixed {
+            display: inline-block;
+        }
+
+        .home-btn-fixed:hover {
+            background: #6b3fe0;
+        }
+
+         /* Иконка клика */
+        .click-icon {
+            color: #ff6b6b;
+             font-size: 24px;
+        }
+
+        /* Трёхколоночный layout для кристаллов */
+        .crystals-row {
+           display: flex;
+             justify-content: space-around;
+            gap: 20px;
+           margin: 30px 0;
+           flex-wrap: wrap;
+       }
+
+       .crystal-card {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+       }
+
+        .crystal-card img {
+             max-width: 200px;
+             width: 100%;
+             margin-bottom: 15px;
+        }
+
+        .crystal-formula {
+            font-size: 1.5em;
+font-weight: bold;
+ margin-bottom: 10px;
+   }
+
+       .crystal-desc {
+             font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+       }
+
+      /* Кнопка попробовать */
+        .try-btn {
+           display: inline-block;
+           padding: 10px 25px;
+           background: #9b7fdb;
+            color: white;
+             text-decoration: none;
+            border-radius: 5px;
+        }
+
+         .try-btn:hover {
+            background: #7c4dff;
+        }
+
+         /* Нижний блок с ресурсами */
+       .resources-block {
+             display: flex;
+             gap: 30px;
+           align-items: flex-start;
+            margin-top: 30px;
+            flex-wrap: wrap;
+       }
+
+         /* Изображение вулкана */
+        .volcano-img {
+             max-width: 100%;
+            display: block;
+            margin: 0 auto;
+         }
+
+         /* Аннотации для вулкана */
+        .volcano-annotations {
+             display: flex;
+             justify-content: space-between;
+             gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .volcano-left, .volcano-right {
+            max-width: 300px;
+            flex: 1;
+            min-width: 200px;
+         }
+
+         .volcano-term {
+            font-weight: bold;
+             color: #333;
+       }
+
+        .volcano-definition {
+             font-size: 14px;
+           color: #555;
+           margin-top: 5px;
+         }
+
+         .volcano-bottom {
+             text-align: center;
+            margin-top: 20px;
+             max-width: 800px;
+           margin-left: auto;
+            margin-right: auto;
+       }
+
+       /* Вулкан с описаниями */
+       .volcano-layout {
+           display: flex;
+           gap: 30px;
+           align-items: flex-start;
+           flex-wrap: wrap;
+       }
+
+       .volcano-layout > div:nth-child(2) {
+           flex: 1;
+           text-align: center;
+           min-width: 280px;
+       }
+
+        /* ============ ПЛАНШЕТ (до 900px) ============ */
+        @media (max-width: 900px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 25px;
+                min-height: auto;
+            }
+
+            .choice-buttons {
+                margin-left: 0;
+            }
+
+            .choice-btn {
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .tts-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-title {
+                font-size: 2em;
+            }
+
+            .volcano-layout {
+                flex-direction: column;
+            }
+
+            .volcano-layout > div:nth-child(2) {
+                order: -1;
+            }
+
+            .volcano-left, .volcano-right {
+                max-width: 100%;
+            }
+        }
+
+        /* ============ ТЕЛЕФОН (до 600px) ============ */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .msg-teacher, .msg-ai {
+                max-width: 100%;
+                padding: 12px 15px;
+            }
+
+            .choice-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .choice-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            .continue-btn, .try-btn, .home-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .continue-wrapper {
+                justify-content: center;
+            }
+
+            .images-row {
+                gap: 20px;
+            }
+
+            .image-card img {
+                max-width: 100%;
+            }
+
+            .slide-title {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+
+            .speech-bubble {
+                padding: 12px 15px;
+                max-width: 100%;
+            }
+
+            .tts-screenshot {
+                padding: 15px;
+            }
+
+            .tts-title {
+                font-size: 14px;
+            }
+
+            .tts-subtitle {
+                font-size: 13px;
+            }
+
+            .tts-textarea {
+                min-height: 120px;
+                font-size: 13px;
+                padding: 10px;
+            }
+
+            .tts-control-row {
+                padding: 8px 10px;
+            }
+
+            .tts-control-label {
+                min-width: 60px;
+                font-size: 13px;
+            }
+
+            .tts-control-value {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .tts-btn {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+
+            .crystals-row {
+                gap: 15px;
+            }
+
+            .crystal-card {
+                min-width: 150px;
+            }
+
+            .crystal-card img {
+                max-width: 150px;
+            }
+
+            .crystal-formula {
+                font-size: 1.2em;
+            }
+
+            .crystal-desc {
+                font-size: 13px;
+            }
+
+            .copy-block {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .copy-text p {
+                font-size: 13px;
+            }
+
+            .link-card {
+                max-width: 100%;
+            }
+
+            .resources-block {
+                gap: 20px;
+            }
+
+            .listen-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .annotation-arrow, .annotation-text {
+                font-size: 12px;
+            }
+
+            .info-list {
+                padding-left: 15px;
+            }
+
+            .info-list li {
+                font-size: 13px;
+            }
+        }
+
+        /* ============ МАЛЕНЬКИЙ ТЕЛЕФОН (до 400px) ============ */
+        @media (max-width: 400px) {
+            .slide-title {
+                font-size: 1.3em;
+            }
+
+            .tts-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tts-btn {
+                justify-content: center;
+            }
+
+            .crystal-card {
+                min-width: 100%;
+            }
+
+            .choice-btn {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+        }
+
+.blink-hand {
+  font-size: 40px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+     </style>
+</head>
+ <body>
+ <!-- ==================== СТРАНИЦА 1: Выбор учителя ==================== -->
+<div id="page1" class="page active">
+     <div class="container">
+       <div class="msg-teacher">
+           <span class="label">Учитель:</span> У меня есть идея, но есть и проблема с созданием <span class="label-bold">презентаций</span> к урокам
+       
+	   </div>
+        <div class="choice-buttons" style="margin-top: 60px;">
+            <a href="#" class="choice-btn purple" onclick="showPage(9); return false;">
+              <span class="choice-icon">╰┈➤ˎˊ˗</span>
+                 Это было с учителем химии
+            </a>
+            <a href="#" class="choice-btn green" onclick="showPage(2); return false;">
+              <span class="choice-icon">╰┈➤ˎˊ˗</span>
+               Это было с учителем биологии
+           </a>
+         <a href="#" class="choice-btn yellow" onclick="showPage(15); return false;">
+               <span class="choice-icon">╰┈➤ˎˊ˗</span>
+              Это было с учителем географии
+           </a>
+		   <a href="../index.html" class="try-btn" style="display:block; margin-top:30px; width:150px;background-color: #b38bfa; color: white;">На старт</a>
+	</div>
+	       </div>
+	   
+    </div>
+
+	
+ </div>
+
+<!-- ==================== СТРАНИЦА 2: Диалог биология ==================== -->
+ <div id="page2" class="page">
+    <div class="container">
+        <div class="msg-teacher">
+            <span class="label">Учитель:</span> У меня не получается делать стильные, но при этом информативные презентации к урокам. Что ты можешь посоветовать?
+        </div>
+
+         <div class="msg-ai">
+  <span class="label">ИИ:</span> Понимаю тебя. Могу посоветовать тебе использовать инфографику и иллюстрации вместо текста и онлайн-ресурсы, а также делить материал на три блока (введение, основная часть, вывод)
+       </div>
+
+       <div class="msg-teacher">
+           <span class="label">Учитель:</span> А ты можешь создать презентацию?
+     </div>
+
+     <div class="msg-ai">
+           <span class="label">ИИ:</span> Конечно! Укажи тему, выбери стиль, сгенерируй и отредактируй презентацию
+       </div>
+
+      <div class="continue-wrapper">
+           <a href="#" class="continue-btn" onclick="showPage(3); return false;">Продолжение</a>
+        </div>
+    </div>
+ </div>
+
+ <!-- ==================== СТРАНИЦА 3 ==================== --> 
+ <div id="page3" class="page"> 
+<style="display:block; font-family:Arial; margin:20px; text-align:center;"> 
+<div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+<!-- Левая колонка --> 
+<div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+<div class="block" style="margin-bottom:20px;"> 
+<p style="font-weight:bold; margin-bottom:10px;">Выбираем нужную категорию инструмента для учителя</p> 
+<img src="img/kom27.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> </div> </div> 
+<!-- Правая колонка --> 
+<div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+<div class="block" style="margin-bottom:20px;"> 
+<p style="font-weight:bold; margin-bottom:10px;">Загружаем файл с теоретическим материалом к презентации</p> 
+<img src="img/kom28.png" alt="Файл для презентации" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+<div class="analysis-wrapper" style="margin-top:15px; text-align:center;"> 
+<div class="analysis-text" style="margin-bottom:10px;"> 
+<strong>Для успешного анализа файла рекомендуем его разделять, выбирая диапазон нужных страниц.</strong> </div> 
+<div class="analysis-text" style="margin-bottom:10px;"> <strong>Для этой цели можно использовать следующий инструмент:</strong> 
+</div> <div class="analysis-link"> <a href="https://www.ilovepdf.com/ru" target="_blank"> <img src="img/kom29.png" alt="I ❤️ PDF" style="width:80px; height:auto; display:block; margin:0 auto;"> 
+</a> </div> </div> </div> <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+
+<a href="#" class="continue-btn" onclick="showPage(4); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;"> Продолжить настройку </a> 
+</div> </div> </div>
+ </div> 
+ 
+ 
+ <!-- ==================== СТРАНИЦА 4 ==================== --> 
+<div id="page4" class="page" style="font-family:Arial; margin:20px; text-align:center;"> 
+<div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+<div class="column" style="background:#f9f9f9; padding:20px;"> <p style="font-weight:bold;">Выбираем минимум текста в презентации</p> 
+<img src="img/kom30.png" alt="Категория инструмента" style="width:100%; height:auto;"> 
+</div> <div class="column" style="background:#f9f9f9; padding:20px;"> 
+<p style="font-weight:bold;">Выбираем русский язык вывода презентации</p> 
+<img src="img/kom31.png" alt="Категория инструмента" style="width:100%; height:auto;"> 
+<p style="font-weight:bold;">Выбираем любую тему презентации</p> 
+<img src="img/kom32.png" alt="Категория инструмента" style="width:100%; height:auto;"> <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+<a href="#" class="continue-btn" onclick="showPage(5); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; border-radius:5px;">Продолжить настройку</a> 
+</div> </div> </div> </div>
+ 
+ <!-- ==================== СТРАНИЦА 5 ==================== --> 
+ <div id="page5" class="page"> 
+ <div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+ <div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+ <div class="block" style="margin-bottom:20px;"> <p style="font-weight:bold; margin-bottom:10px;">Выбираем источник изображений для презентации</p> 
+ <img src="img/kom33.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+ </div>
+ </div> 
+ <div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+ <div class="block" style="margin-bottom:20px;"> 
+ <p style="font-weight:bold; margin-bottom:10px;">Выбираем формат и размер презентации</p> 
+ <img src="img/kom34.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+ <p style="font-weight:bold; margin-bottom:10px;">И нажимаем на кнопку «Сгенерировать»</p> 
+
+ </div> 
+ <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+ <a href="#" class="continue-btn" onclick="showPage(6); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;"> Продолжить настройку </a> 
+ </div> 
+ </div>
+ </div>
+ </div>
+ 
+   
+ <!-- ==================== СТРАНИЦА 6: Доработка ==================== -->
+ <div id="page6" class="page">
+
+ <div class="container"> <h1 class="slide-title">Улучшение сгенерированной презентации</h1>
+
+             <div class="images-row">
+         <div class="image-card">
+                   <p style="font-weight:normal; font-size: 14px; max-width: 300px;">1. Редактирование текстовой части презентации (необходимо выделить нужную часть текста)</p>
+				   <p style="font-weight:normal; font-size: 14px; max-width: 300px;">2. Замена изображений:</p>
+<p style="font-weight:normal; font-size: 14px; max-width: 300px;">А) экспортом готовых файлов</p>
+				<img src="img/kom35.png">
+                       
+            </div>
+			<div style="display:flex; align-items:center; gap:20px;"> 
+						<span style="font-size:24px;">⟶</span> </div>
+			           <div class="image-card">
+                              <p style="font-weight:normal; font-size: 14px; max-width: 300px;">Визуализация с помощью ИИ-инструментов</p>
+				<img src="img/kom36.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+				<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Результат</p>
+				<img src="img/kom37.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+                 </div>
+      </div>
+
+       <div class="continue-wrapper">
+             <a href="#" class="try-btn" onclick="showPage(7); return false;">Продолжить настройку</a>
+         </div>
+   </div>
+ </div>
+
+ <script> // Функция переключения страниц function showPage(pageNumber) 
+ { const pages = document.querySelectorAll('.page'); pages.forEach(page => page.style.display = 'none');
+ // скрываем все const targetPage = document.getElementById('page' + pageNumber); if (targetPage) { targetPage.style.display = 'block'; // показываем нужную } } 
+ // При загрузке показываем страницу 3 document.addEventListener("DOMContentLoaded", function() { showPage(3); }); </script>
+ 
+  <!-- ==================== СТРАНИЦА 7: Доработка ==================== -->
+ <div id="page7" class="page">
+
+ <div class="container"> <h1 class="slide-title">Улучшение сгенерированной презентации</h1>
+
+             <div class="images-row">
+         <div class="image-card">
+                    <p style="font-weight:normal; font-size: 14px; max-width: 300px;">2. Замена изображений:</p>
+<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Б) с помощью встроенного ИИ-ассистента</p>
+ <img src="img/kom40.png" style="width:70%; height:auto; display:block; margin-bottom:15px;">   
+				<img src="img/kom39.png" style="width:70%; height:auto; display:block; margin-bottom:15px;">
+				               
+            </div>
+			<div style="display:flex; align-items:center; gap:20px;"> 
+						<span style="font-size:24px;">⟶</span> </div>
+			           <div class="image-card">
+                             				<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Результат</p>
+				<img src="img/kom41.png" style="width:90%; height:auto; display:block; margin-bottom:15px;">
+                 </div>
+      </div>
+ <div class="continue-wrapper">
+            <a href="https://gamma.app/docs/-pjizfm8euztl59r?mode=doc" target="_blank" class="try-btn" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px;"> Посмотреть результат </a>
+         </div>
+       <div class="continue-wrapper">
+             <a href="#" class="try-btn" onclick="showPage(8); return false;">Попробовать</a>
+         </div>
+   </div>
+ </div>
+ 
+ <!-- ==================== СТРАНИЦА 8: ИТОГ БИО============== -->
+ <div id="page8" class="page">
+     <div class="container">
+              <div class="msg-teacher">
+            <span class="label">Учитель:</span> У меня не получается делать стильные, но при этом информативные презентации к урокам. Что ты можешь посоветовать?
+        </div>
+
+         <div class="msg-ai">
+  <span class="label">ИИ:</span> Понимаю тебя. Могу посоветовать тебе использовать инфографику и иллюстрации вместо текста и онлайн-ресурсы, а также делить материал на три блока (введение, основная часть, вывод)
+       </div>
+
+       <div class="msg-teacher">
+           <span class="label">Учитель:</span> А ты можешь создать презентацию?
+     </div>
+
+     <div class="msg-ai">
+           <span class="label">ИИ:</span> Конечно! Укажи тему, выбери стиль, сгенерируй и отредактируй презентацию
+       </div>
+
+       <div class="resources-block">
+            <div class="copy-block" style="flex: 1;">
+                <div class="copy-icon">‼️</div>
+                 <div class="copy-text">
+                   <div class="copy-hint">Внимание!</div>
+                   <p>ИИ-инструмент требует внимательной и грамотной настройки запроса, чтобы получить качественный результат</p>
+                </div>
+             </div>
+
+            <div class="link-card">
+
+
+			   <a href="https://gamma.app/ru" target="_blank" style="text-decoration:none; color:inherit;"> 
+			   <div class="link-card"> 
+			   <div class="link-card-title">Gamma</div> 
+			   <img src="img/kom38.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+			   <div class="link-card-url">🔗 Gamma</div> </div> </a>
+           <span class="blink-hand">👆</span>
+
+		   </div>
+       </div>
+	    <a href="#" class="try-btn" onclick="showPage(1); return false;">На главную</a>
+    </div>
+   
+ </div>
+
+ <!-- ==================== СТРАНИЦА 9: Химия диалог ==================== -->
+ <div id="page9" class="page">
+    <div class="container">
+        <div class="msg-teacher">
+            <span class="label">Учитель:</span> У меня не получается делать стильные, но при этом информативные презентации к урокам. Что ты можешь посоветовать?
+        </div>
+
+         <div class="msg-ai">
+  <span class="label">ИИ:</span> Понимаю тебя. Могу посоветовать тебе использовать инфографику и иллюстрации вместо текста и онлайн-ресурсы, а также делить материал на три блока (введение, основная часть, вывод)
+       </div>
+
+       <div class="msg-teacher">
+           <span class="label">Учитель:</span> А ты можешь создать презентацию?
+     </div>
+
+     <div class="msg-ai">
+           <span class="label">ИИ:</span> Конечно! Укажи тему, выбери стиль, сгенерируй и отредактируй презентацию
+       </div>
+
+      <div class="continue-wrapper">
+           <a href="#" class="continue-btn" onclick="showPage(10); return false;">Продолжение</a>
+        </div>
+    </div>
+ </div>
+
+
+ <!-- ==================== СТРАНИЦА 10: Химия==================== -->
+<div id="page10" class="page"> 
+<style="display:block; font-family:Arial; margin:20px; text-align:center;"> 
+<div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+<!-- Левая колонка --> 
+<div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+<div class="block" style="margin-bottom:20px;"> 
+<p style="font-weight:bold; margin-bottom:10px;">Выбираем нужную категорию инструмента для учителя</p> 
+<img src="img/kom27.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> </div> </div> 
+<!-- Правая колонка --> 
+<div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+<div class="block" style="margin-bottom:20px;"> 
+<p style="font-weight:bold; margin-bottom:10px;">Загружаем файл с теоретическим материалом к презентации</p> 
+<img src="img/kom28.png" alt="Файл для презентации" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+<div class="analysis-wrapper" style="margin-top:15px; text-align:center;"> 
+<div class="analysis-text" style="margin-bottom:10px;"> 
+<strong>Для успешного анализа файла рекомендуем его разделять, выбирая диапазон нужных страниц.</strong> </div> 
+<div class="analysis-text" style="margin-bottom:10px;"> <strong>Для этой цели можно использовать следующий инструмент:</strong> 
+</div> <div class="analysis-link"> <a href="https://www.ilovepdf.com/ru" target="_blank"> <img src="img/kom29.png" alt="I ❤️ PDF" style="width:80px; height:auto; display:block; margin:0 auto;"> 
+</a> </div> </div> </div> <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+
+<a href="#" class="continue-btn" onclick="showPage(11); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;"> Продолжить настройку </a> 
+</div> </div> </div>
+ </div> 
+
+<!-- ==================== СТРАНИЦА 11:  химия ==================== -->
+ <div id="page11" class="page" style="font-family:Arial; margin:20px; text-align:center;"> 
+<div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+<div class="column" style="background:#f9f9f9; padding:20px;"> <p style="font-weight:bold;">Выбираем минимум текста в презентации</p> 
+<img src="img/kom30.png" alt="Категория инструмента" style="width:100%; height:auto;"> 
+</div> <div class="column" style="background:#f9f9f9; padding:20px;"> 
+<p style="font-weight:bold;">Выбираем русский язык вывода презентации</p> 
+<img src="img/kom31.png" alt="Категория инструмента" style="width:100%; height:auto;"> 
+<p style="font-weight:bold;">Выбираем любую тему презентации</p> 
+<img src="img/kom42.png" alt="Категория инструмента" style="width:100%; height:auto;"> <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+<a href="#" class="continue-btn" onclick="showPage(12); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; border-radius:5px;">Продолжить настройку</a> 
+</div> </div> </div> </div>
+
+
+ <!-- ==================== СТРАНИЦА 12: Химия ==================== -->
+<div id="page12" class="page"> 
+ <div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+ <div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+ <div class="block" style="margin-bottom:20px;"> <p style="font-weight:bold; margin-bottom:10px;">Выбираем источник изображений для презентации</p> 
+ <img src="img/kom33.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+ </div>
+ </div> 
+ <div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+ <div class="block" style="margin-bottom:20px;"> 
+ <p style="font-weight:bold; margin-bottom:10px;">Выбираем формат и размер презентации</p> 
+ <img src="img/kom34.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+ <p style="font-weight:bold; margin-bottom:10px;">И нажимаем на кнопку «Сгенерировать»</p> 
+
+ </div> 
+ <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+ <a href="#" class="continue-btn" onclick="showPage(13); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;"> Продолжить настройку </a> 
+ </div> 
+ </div>
+ </div>
+ </div>
+
+ <!-- ==================== СТРАНИЦА 13: TTS с аннотациями химия ==================== -->
+  <div id="page13" class="page">
+
+ <div class="container"> <h1 class="slide-title">Улучшение сгенерированной презентации</h1>
+
+             <div class="images-row">
+         <div class="image-card">
+                   <p style="font-weight:normal; font-size: 14px; max-width: 300px;">1. Редактирование текстовой части презентации (необходимо выделить нужную часть текста)</p>
+				   <p style="font-weight:normal; font-size: 14px; max-width: 300px;">2. Замена изображений:</p>
+<p style="font-weight:normal; font-size: 14px; max-width: 300px;">А) экспортом готовых файлов</p>
+				<img src="img/kom43.png">
+                       
+            </div>
+			<div style="display:flex; align-items:center; gap:20px;"> 
+						<span style="font-size:24px;">⟶</span> </div>
+			           <div class="image-card">
+                              <p style="font-weight:normal; font-size: 14px; max-width: 300px;">Визуализация с помощью ИИ-инструментов</p>
+				<img src="img/kom36.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+				<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Результат</p>
+				<img src="img/kom44.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+                 </div>
+      </div>
+
+       <div class="continue-wrapper">
+             <a href="#" class="try-btn" onclick="showPage(14); return false;">Продолжить настройку</a>
+         </div>
+   </div>
+ </div>
+
+
+ <!-- ==================== СТРАНИЦА 14: Ресурсы химия ==================== -->
+ <div id="page14" class="page">
+
+ <div class="container"> <h1 class="slide-title">Улучшение сгенерированной презентации</h1>
+
+             <div class="images-row">
+         <div class="image-card">
+                    <p style="font-weight:normal; font-size: 14px; max-width: 300px;">2. Замена изображений:</p>
+<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Б) с помощью встроенного ИИ-ассистента</p>
+ <img src="img/kom40.png" style="width:70%; height:auto; display:block; margin-bottom:15px;">   
+				<img src="img/kom39.png" style="width:70%; height:auto; display:block; margin-bottom:15px;">
+				               
+            </div>
+			<div style="display:flex; align-items:center; gap:20px;"> 
+						<span style="font-size:24px;">⟶</span> </div>
+			           <div class="image-card">
+                             				<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Результат</p>
+				<img src="img/kom45.png" style="width:90%; height:auto; display:block; margin-bottom:15px;">
+                 </div>
+      </div>
+ <div class="continue-wrapper">
+            <a href="https://gamma.app/docs/-3hw6t49r5oyzew1" target="_blank" class="try-btn" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px;"> Посмотреть результат </a>
+         </div>
+       <div class="continue-wrapper">
+             <a href="#" class="try-btn" onclick="showPage(8); return false;">Попробовать</a>
+         </div>
+   </div>
+ </div>
+
+  <!-- ==================== СТРАНИЦА 15: ГЕООО ==================== -->
+ <div id="page15" class="page">
+    <div class="container">
+        <div class="msg-teacher">
+            <span class="label">Учитель:</span> У меня не получается делать стильные, но при этом информативные презентации к урокам. Что ты можешь посоветовать?
+        </div>
+
+         <div class="msg-ai">
+  <span class="label">ИИ:</span> Понимаю тебя. Могу посоветовать тебе использовать инфографику и иллюстрации вместо текста и онлайн-ресурсы, а также делить материал на три блока (введение, основная часть, вывод)
+       </div>
+
+       <div class="msg-teacher">
+           <span class="label">Учитель:</span> А ты можешь создать презентацию?
+     </div>
+
+     <div class="msg-ai">
+           <span class="label">ИИ:</span> Конечно! Укажи тему, выбери стиль, сгенерируй и отредактируй презентацию
+       </div>
+
+      <div class="continue-wrapper">
+           <a href="#" class="continue-btn" onclick="showPage(16); return false;">Продолжение</a>
+        </div>
+    </div>
+ </div>
+
+
+ <!-- ==================== СТРАНИЦА 16: ГЕООО ==================== -->
+<div id="page16" class="page"> 
+<style="display:block; font-family:Arial; margin:20px; text-align:center;"> 
+<div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+<!-- Левая колонка --> 
+<div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+<div class="block" style="margin-bottom:20px;"> 
+<p style="font-weight:bold; margin-bottom:10px;">Выбираем нужную категорию инструмента для учителя</p> 
+<img src="img/kom27.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> </div> </div> 
+<!-- Правая колонка --> 
+<div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+<div class="block" style="margin-bottom:20px;"> 
+<p style="font-weight:bold; margin-bottom:10px;">Загружаем файл с теоретическим материалом к презентации</p> 
+<img src="img/kom46.png" alt="Файл для презентации" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+<div class="analysis-wrapper" style="margin-top:15px; text-align:center;"> 
+<div class="analysis-text" style="margin-bottom:10px;"> 
+<strong>Для успешного анализа файла рекомендуем его разделять, выбирая диапазон нужных страниц.</strong> </div> 
+<div class="analysis-text" style="margin-bottom:10px;"> <strong>Для этой цели можно использовать следующий инструмент:</strong> 
+</div> <div class="analysis-link"> <a href="https://www.ilovepdf.com/ru" target="_blank"> <img src="img/kom29.png" alt="I ❤️ PDF" style="width:80px; height:auto; display:block; margin:0 auto;"> 
+</a> </div> </div> </div> <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+
+<a href="#" class="continue-btn" onclick="showPage(17); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;"> Продолжить настройку </a> 
+</div> </div> </div>
+ </div> 
+
+<!-- ==================== СТРАНИЦА 17  ГЕООО ==================== -->
+ <div id="page17" class="page" style="font-family:Arial; margin:20px; text-align:center;"> 
+<div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+<div class="column" style="background:#f9f9f9; padding:20px;"> <p style="font-weight:bold;">Выбираем минимум текста в презентации</p> 
+<img src="img/kom30.png" alt="Категория инструмента" style="width:100%; height:auto;"> 
+</div> <div class="column" style="background:#f9f9f9; padding:20px;"> 
+<p style="font-weight:bold;">Выбираем русский язык вывода презентации</p> 
+<img src="img/kom31.png" alt="Категория инструмента" style="width:100%; height:auto;"> 
+<p style="font-weight:bold;">Выбираем любую тему презентации</p> 
+<img src="img/kom42.png" alt="Категория инструмента" style="width:100%; height:auto;"> <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+<a href="#" class="continue-btn" onclick="showPage(18); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; border-radius:5px;">Продолжить настройку</a> 
+</div> </div> </div> </div>
+
+
+ <!-- ==================== СТРАНИЦА 18: ГЕООО ==================== -->
+<div id="page18" class="page"> 
+ <div class="container two-columns" style="display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto;"> 
+ <div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+ <div class="block" style="margin-bottom:20px;"> <p style="font-weight:bold; margin-bottom:10px;">Выбираем источник изображений для презентации</p> 
+ <img src="img/kom33.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+ </div>
+ </div> 
+ <div class="column" style="background:#f9f9f9; padding:20px; border-radius:8px; text-align:left; box-shadow:0 2px 6px rgba(0,0,0,0.1);"> 
+ <div class="block" style="margin-bottom:20px;"> 
+ <p style="font-weight:bold; margin-bottom:10px;">Выбираем формат и размер презентации</p> 
+ <img src="img/kom34.png" alt="Категория инструмента" style="width:100%; height:auto; display:block; margin-bottom:15px;"> 
+ <p style="font-weight:bold; margin-bottom:10px;">И нажимаем на кнопку «Сгенерировать»</p> 
+
+ </div> 
+ <div class="continue-wrapper" style="margin-top:20px; text-align:center;"> 
+ <a href="#" class="continue-btn" onclick="showPage(19); return false;" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;"> Продолжить настройку </a> 
+ </div> 
+ </div>
+ </div>
+ </div>
+
+ <!-- ==================== СТРАНИЦА 19: ГЕООО  ==================== -->
+  <div id="page19" class="page">
+
+ <div class="container"> <h1 class="slide-title">Улучшение сгенерированной презентации</h1>
+
+             <div class="images-row">
+         <div class="image-card">
+                   <p style="font-weight:normal; font-size: 14px; max-width: 300px;">1. Редактирование текстовой части презентации (необходимо выделить нужную часть текста)</p>
+				   <p style="font-weight:normal; font-size: 14px; max-width: 300px;">2. Замена изображений:</p>
+<p style="font-weight:normal; font-size: 14px; max-width: 300px;">А) экспортом готовых файлов</p>
+				<img src="img/kom47.png">
+                       
+            </div>
+			<div style="display:flex; align-items:center; gap:20px;"> 
+						<span style="font-size:24px;">⟶</span> </div>
+			           <div class="image-card">
+                              <p style="font-weight:normal; font-size: 14px; max-width: 300px;">Визуализация с помощью ИИ-инструментов</p>
+				<img src="img/kom36.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+				<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Результат</p>
+				<img src="img/kom48.png" style="width:50%; height:auto; display:block; margin-bottom:15px;">
+                 </div>
+      </div>
+
+       <div class="continue-wrapper">
+             <a href="#" class="try-btn" onclick="showPage(20); return false;">Продолжить настройку</a>
+         </div>
+   </div>
+ </div>
+
+
+ <!-- ==================== СТРАНИЦА 20: ГЕООО ==================== -->
+ <div id="page20" class="page">
+
+ <div class="container"> <h1 class="slide-title">Улучшение сгенерированной презентации</h1>
+
+             <div class="images-row">
+         <div class="image-card">
+                    <p style="font-weight:normal; font-size: 14px; max-width: 300px;">2. Замена изображений:</p>
+<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Б) с помощью встроенного ИИ-ассистента</p>
+ <img src="img/kom40.png" style="width:70%; height:auto; display:block; margin-bottom:15px;">   
+				<img src="img/kom39.png" style="width:70%; height:auto; display:block; margin-bottom:15px;">
+				               
+            </div>
+			<div style="display:flex; align-items:center; gap:20px;"> 
+						<span style="font-size:24px;">⟶</span> </div>
+			           <div class="image-card">
+                             				<p style="font-weight:normal; font-size: 14px; max-width: 300px;">Результат</p>
+				<img src="img/kom49.png" style="width:90%; height:auto; display:block; margin-bottom:15px;">
+                 </div>
+      </div>
+ <div class="continue-wrapper">
+            <a href="https://gamma.app/docs/-pe2wl4aytul7omi" target="_blank" class="try-btn" style="background-color:#6a0dad; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px;"> Посмотреть результат </a>
+         </div>
+       <div class="continue-wrapper">
+             <a href="#" class="try-btn" onclick="showPage(8); return false;">Попробовать</a>
+         </div>
+   </div>
+ </div>
+
+ <script>
+  function showPage(pageNum) {
+       // Скрыть все страницы
+      document.querySelectorAll('.page').forEach(page => {
+          page.classList.remove('active');
+        });
+       // Показать выбранную
+       document.getElementById('page' + pageNum).classList.add('active');
+      // Прокрутить вверх
+       window.scrollTo(0, 0);
+   }
+      
+</script>
+<style> .page { display: none; } /* все страницы скрыты */ .page.active { display: block; } /* активная страница видна */ </style>
+<script> function showPage(pageNum) { // скрыть все страницы document.querySelectorAll('.page').forEach(page => page.classList.remove('active')); // показать выбранную document.getElementById('page' + pageNum).classList.add('active'); // прокрутить вверх window.scrollTo(0, 0); } // при загрузке показываем страницу 3 document.addEventListener("DOMContentLoaded", function() { showPage(3); }); </script>
+
+</body>
+</html>

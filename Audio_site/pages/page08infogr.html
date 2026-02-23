@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Образовательные инфографики</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            border: 2px dashed #9B8BC2;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Message bubbles */
+        .message {
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .message:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .teacher {
+            background: #E8E4F4;
+            border-left: 4px solid #9B8BC2;
+        }
+
+        .teacher .label {
+            color: #6B5B95;
+            font-weight: bold;
+        }
+
+        .ai {
+            background: #FDF6D8;
+            border-left: 4px solid #F5C842;
+        }
+
+        .ai .label {
+            color: #C4A000;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+			
+        }
+
+        .btn-purple {
+            background: #9B8BC2;
+            color: white;
+        }
+
+        .btn-purple:hover {
+            background: #8A7AB1;
+            transform: scale(1.05);
+        }
+
+        .btn-teal {
+            background: #4DB6AC;
+            color: white;
+        }
+
+        .btn-teal:hover {
+            background: #3DA69C;
+        }
+
+        .btn-yellow {
+            background: #F5C842;
+            color: #333;
+        }
+
+        .btn-yellow:hover {
+            background: #E5B832;
+        }
+
+        .btn-green {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background: #45A049;
+        }
+
+        /* Subject buttons on home page */
+        .subject-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+            align-items: flex-start;
+        }
+
+        .subject-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 35px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            min-width: 320px;
+        }
+
+        .subject-btn:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .subject-btn.chemistry {
+            background: #9B8BC2;
+            color: white;
+        }
+
+        .subject-btn.biology {
+            background: #4DB6AC;
+            color: white;
+        }
+
+        .subject-btn.geography {
+            background: #F5C842;
+            color: #333;
+        }
+
+        .click-icon {
+            width: 30px;
+            height: 30px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23E74C3C'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%23E74C3C' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='4' fill='%23E74C3C'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-right {
+            margin-left: auto;
+        }
+
+        /* Connector line */
+        .connector {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 50px;
+        }
+
+        .connector::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            border-left: 2px dashed #F5C842;
+        }
+
+        /* AI Visual Interface */
+        .ai-interface {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .ai-sidebar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .ai-logo {
+            width: 35px;
+            height: 35px;
+            background: #4CAF50;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .ai-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .ai-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .ai-subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .ai-input {
+            background: #FDF6D8;
+            border: 2px dashed #F5C842;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 700px;
+            text-align: left;
+        }
+
+        .create-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .create-btn:hover {
+            background: #45A049;
+            transform: scale(1.05);
+        }
+
+        /* Mind map styles */
+        .mindmap-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .mindmap {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mindmap-center {
+            background: linear-gradient(135deg, #E91E63, #9C27B0);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .mindmap-branch {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .branch-item {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 2px solid;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .branch-item:hover {
+            transform: scale(1.05);
+        }
+
+        .branch-yellow { border-color: #F5C842; background: #FFFDE7; }
+        .branch-orange { border-color: #FF9800; background: #FFF3E0; }
+        .branch-teal { border-color: #4DB6AC; background: #E0F2F1; }
+        .branch-pink { border-color: #E91E63; background: #FCE4EC; }
+        .branch-green { border-color: #4CAF50; background: #E8F5E9; }
+        .branch-blue { border-color: #2196F3; background: #E3F2FD; }
+
+        /* Image display */
+        .image-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Download section */
+        .download-section {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+
+        .download-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+            max-width: 350px;
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .download-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .toolbar-btn.green {
+            background: #E8F5E9;
+            border-color: #4CAF50;
+            color: #2E7D32;
+        }
+
+        /* Summary page */
+        .summary-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .summary-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-images {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .summary-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .summary-img:hover {
+            transform: scale(1.1);
+        }
+
+        .summary-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .copy-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .copy-icon {
+            width: 40px;
+            height: 40px;
+            background: #E8F5E9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4CAF50;
+            font-size: 20px;
+        }
+
+        /* Infographic display */
+        .infographic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .infographic-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .infographic-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .infographic-header {
+            padding: 15px 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .infographic-header.anemochory { background: linear-gradient(135deg, #8BC34A, #4CAF50); }
+        .infographic-header.zoochory { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .infographic-header.autochory { background: linear-gradient(135deg, #9C27B0, #673AB7); }
+
+        .infographic-body {
+            padding: 20px;
+        }
+
+        /* Chemistry infographic */
+        .chemistry-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .reaction-center {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            padding: 30px 50px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .reactions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .reaction-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid;
+        }
+
+        .reaction-card.synthesis { border-color: #4CAF50; }
+        .reaction-card.decomposition { border-color: #FF9800; }
+        .reaction-card.substitution { border-color: #2196F3; }
+        .reaction-card.exchange { border-color: #9C27B0; }
+
+        .reaction-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .reaction-formula {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .message {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+
+            .subject-btn {
+                min-width: 100%;
+                font-size: 16px;
+            }
+
+            .download-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .reactions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-title {
+                font-size: 20px;
+            }
+        }
+
+        /* World map section */
+        .worldmap-container {
+            position: relative;
+            padding: 20px;
+        }
+
+        .worldmap-img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .climate-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .legend-item:hover {
+            transform: scale(1.02);
+        }
+
+        .legend-tropical { background: #FFCDD2; border-left: 4px solid #E53935; }
+        .legend-subtropical { background: #FFE0B2; border-left: 4px solid #FF9800; }
+        .legend-temperate { background: #C8E6C9; border-left: 4px solid #4CAF50; }
+        .legend-continental { background: #BBDEFB; border-left: 4px solid #2196F3; }
+        .legend-polar { background: #E1BEE7; border-left: 4px solid #9C27B0; }
+        .legend-desert { background: #FFF9C4; border-left: 4px solid #FBC02D; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <div class="card">
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> У меня есть идея, но есть и проблема с созданием <strong>инфографики</strong>
+                </div>
+
+                
+				<div class="subject-buttons">
+                    <button class="subject-btn chemistry" onclick="showPage('chemistry-1')">
+                        <span class="choice-icon">╰┈➤ˎˊ˗</span>
+                        Это было с учителем химии
+                    </button>
+
+                    <button class="subject-btn biology" onclick="showPage('biology-1')">
+                         <span class="choice-icon">╰┈➤ˎˊ˗</span>
+                        Это было с учителем биологии
+                    </button>
+
+                    <button class="subject-btn geography" onclick="showPage('geography-1')">
+                         <span class="choice-icon">╰┈➤ˎˊ˗</span>
+                        Это было с учителем географии
+                    </button>
+					</div>
+		  <a href="../index.html" class="btn btn-purple btn-nav" style="display:block; margin-top:30px; width:150px;background-color: #b38bfa; color: white;">На старт</a>
+
+	       </div>
+                </div>
+
+               
+            </div>
+        </div>
+
+        <!-- ==================== GEOGRAPHY SECTION ==================== -->
+
+        <!-- Geography Page 1 - Dialog -->
+        <div id="geography-1" class="page">
+            <div class="card">
+                <div class="message teacher" onclick="showPage('geography-2')">
+                    <span class="label">Учитель:</span> Я хочу сделать инфографику для урока географии. Тема — климатические пояса Земли. Мне нужно, чтобы она была визуальной, понятной и связана с жизнью человека
+                </div>
+
+                <div class="message ai" onclick="showPage('geography-2')">
+                    <span class="label">ИИ:</span> Ты хочешь показать, как климат влияет на природу и деятельность людей? Например, сравнить тропический, умеренный и арктический климат?
+                </div>
+
+                <div class="message teacher" onclick="showPage('geography-2')">
+                    <span class="label">Учитель:</span> Да. И чтобы учащиеся увидели, как температура, осадки и растительность связаны между собой
+                </div>
+
+                <div class="message ai" onclick="showPage('geography-2')">
+                    <span class="label">ИИ:</span> Вот как можно построить инфографику
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('home')">На главную</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('geography-2')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geography Page 2 - AI Interface -->
+        <div id="geography-2" class="page">
+            <div class="card">
+                <div class="ai-interface">
+                    <div class="ai-header">
+                        <div class="ai-logo">✓</div>
+                        <span style="font-weight: 600;">AI Visual</span>
+                    </div>
+                    <div class="ai-content">
+                        <h2 class="ai-title">Какая у вас идея для интеллект-карты сегодня?</h2>
+                        <p class="ai-subtitle">Напишите, вставьте или загрузите — мы быстро превратим это в умную интеллект-карту.</p>
+
+                        <div class="ai-input" onclick="showPage('geography-3')">
+                            <p><strong>Карта с цветами по климатическим поясам</strong></p>
+                            <p>Для каждого пояса — блок с температурой, осадками, типичной растительностью и примерами адаптации человека</p>
+                            <p>Например:</p>
+                            <p>Тропики — высокая температура, много осадков, джунгли, дома на сваях</p>
+                            <p>Умеренный пояс — сезонность, леса и поля, отопление</p>
+                            <p>Арктика — мороз, снег, тундра, утеплённая одежда</p>
+                        </div>
+
+                        <button class="create-btn" onclick="showPage('geography-3')">Создать →</button>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('geography-1')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('geography-3')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geography Page 3 - Mind Map -->
+        <div id="geography-3" class="page">
+            <div class="card">
+                <div class="mindmap-container">
+                    <h3 style="text-align: center; margin-bottom: 30px;">Ментальная карта: Климатические пояса</h3>
+
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;">
+                        <div class="mindmap-center" onclick="showPage('geography-4')">
+                            Карта с цветами по климатическим поясам
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px;">
+                        <!-- Тропики -->
+                        <div class="branch-item branch-yellow" onclick="showPage('geography-4')">
+                            <strong>🌴 Тропики</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Температура: Высокая</li>
+                                <li>Осадки: Много осадков</li>
+                                <li>Растительность: Джунгли</li>
+                                <li>Адаптация: Дома на сваях</li>
+                            </ul>
+                        </div>
+
+                        <!-- Умеренный пояс -->
+                        <div class="branch-item branch-green" onclick="showPage('geography-4')">
+                            <strong>🌲 Умеренный пояс</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Температура: Сезонность</li>
+                                <li>Осадки: Умеренные</li>
+                                <li>Растительность: Леса и поля</li>
+                                <li>Адаптация: Системы отопления</li>
+                            </ul>
+                        </div>
+
+                        <!-- Арктика -->
+                        <div class="branch-item branch-blue" onclick="showPage('geography-4')">
+                            <strong>❄️ Арктика</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Температура: Мороз</li>
+                                <li>Осадки: Снег</li>
+                                <li>Растительность: Тундра</li>
+                                <li>Адаптация: Утеплённая одежда</li>
+                            </ul>
+                        </div>
+
+                        <!-- Температурные характеристики -->
+                        <div class="branch-item branch-orange" onclick="showPage('geography-4')">
+                            <strong>🌡️ Температурные характеристики</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Высокие температуры</li>
+                                <li>Сезонные колебания</li>
+                                <li>Низкие температуры</li>
+                            </ul>
+                        </div>
+
+                        <!-- Осадочные режимы -->
+                        <div class="branch-item branch-teal" onclick="showPage('geography-4')">
+                            <strong>💧 Осадочные режимы</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Обильные осадки</li>
+                                <li>Умеренные осадки</li>
+                                <li>Снежные осадки</li>
+                            </ul>
+                        </div>
+
+                        <!-- Адаптация человека -->
+                        <div class="branch-item branch-pink" onclick="showPage('geography-4')">
+                            <strong>👥 Адаптация человека</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Архитектурные решения</li>
+                                <li>Одежда и экипировка</li>
+                                <li>Технологические системы</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('geography-2')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('geography-4')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geography Page 4 - World Map -->
+        <div id="geography-4" class="page">
+            <div class="card">
+                <div class="worldmap-container">
+                    <h3 style="text-align: center; margin-bottom: 20px;">Климатические пояса Земли</h3>
+
+                    <div style="background: linear-gradient(180deg, #1E88E5 0%, #4FC3F7 30%, #81C784 50%, #FFD54F 70%, #FF8A65 100%); border-radius: 15px; padding: 30px; position: relative;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div class="legend-item legend-tropical" onclick="showPage('geography-5')">
+                                <strong>Tropical Zone</strong><br>
+                                Temperature 20-30°C year-round<br>
+                                Precipitation 2000-3000mm annually
+                            </div>
+                            <div class="legend-item legend-subtropical" onclick="showPage('geography-5')">
+                                <strong>Subtropical Zone</strong><br>
+                                Temperature 15-35°C<br>
+                                Precipitation 1000-2000mm
+                            </div>
+                            <div class="legend-item legend-temperate" onclick="showPage('geography-5')">
+                                <strong>Temperate Zone</strong><br>
+                                Temperature -5 to 25°C<br>
+                                Precipitation 500-1500mm
+                            </div>
+                            <div class="legend-item legend-continental" onclick="showPage('geography-5')">
+                                <strong>Continental Zone</strong><br>
+                                Temperature -20 to 30°C<br>
+                                Extreme seasonal variation
+                            </div>
+                            <div class="legend-item legend-polar" onclick="showPage('geography-5')">
+                                <strong>Polar/Arctic Zone</strong><br>
+                                Temperature below -10°C<br>
+                                Precipitation 200-400mm (mostly snow)
+                            </div>
+                            <div class="legend-item legend-desert" onclick="showPage('geography-5')">
+                                <strong>Desert Zone</strong><br>
+                                Temperature 20-45°C (extreme heat)<br>
+                                Precipitation below 250mm
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #FDF6D8; border-radius: 10px; padding: 20px; margin-top: 20px;">
+                        <p><strong>Карта с цветами по климатическим поясам</strong></p>
+                        <p>Для каждого пояса — блок с температурой, осадками, типичной растительностью и примерами адаптации человека</p>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('geography-3')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('geography-5')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geography Page 5 - Download Options -->
+        <div id="geography-5" class="page">
+            <div class="card">
+                <h3 style="text-align: center; margin-bottom: 20px;">Готовые материалы</h3>
+
+                <div class="download-section">
+                    <div class="download-card" onclick="showPage('geography-6')">
+                        <p style="margin-bottom: 15px;"><strong>скачать инфографику</strong></p>
+                        <div class="toolbar">
+                            <button class="toolbar-btn green">📤 Поделиться</button>
+                            <button class="toolbar-btn">🎨 Тема</button>
+                            <button class="toolbar-btn green">⬇️ Загрузить</button>
+                        </div>
+                        <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                            <p style="font-size: 13px;">Ментальная карта климатических поясов</p>
+                        </div>
+                    </div>
+
+                    <div class="download-card" onclick="showPage('geography-6')">
+                        <p style="margin-bottom: 15px;"><strong>редактировать / скачать инфографику</strong></p>
+                        <div class="toolbar">
+                            <button class="toolbar-btn">HD Upscale</button>
+                            <button class="toolbar-btn">Remove bg</button>
+                            <button class="toolbar-btn">Mockup</button>
+                            <button class="toolbar-btn">Edit Elements</button>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #4FC3F7, #81C784, #FFD54F); padding: 20px; border-radius: 10px;">
+                            <p style="color: white; font-weight: bold;">Карта климатических поясов мира</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('geography-4')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('geography-6')">Попробовать</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geography Page 6 - Summary -->
+        <div id="geography-6" class="page">
+            <div class="card">
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> Я хочу сделать инфографику для урока географии. Тема — климатические пояса Земли. Мне нужно, чтобы она была визуальной, понятной и связана с жизнью человека
+                </div>
+
+                <div class="message ai">
+                    <span class="label">ИИ:</span> Ты хочешь показать, как климат влияет на природу и деятельность людей? Например, сравнить тропический, умеренный и арктический климат?
+                </div>
+
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> Да. И чтобы учащиеся увидели, как температура, осадки и растительность связаны между собой
+                </div>
+
+                <div class="message ai">
+                    <span class="label">ИИ:</span> Вот как можно построить инфографику
+                </div>
+
+                <div class="summary-content" style="margin-top: 20px;">
+                    <div class="copy-box">
+                        <div class="copy-icon">📋</div>
+                        <div>
+                            <p><strong>Скопируй этот текст, чтобы нарисовать ментальную карту</strong></p>
+                            <p style="margin-top: 10px; font-size: 14px;">
+                                Карта с цветами по климатическим поясам<br>
+                                Для каждого пояса — блок с температурой, осадками, типичной растительностью и примерами адаптации человека<br>
+                                Например:<br>
+                                Тропики — высокая температура, много осадков, джунгли, дома на сваях<br>
+                                Умеренный пояс — сезонность, леса и поля, отопление<br>
+                                Арктика — мороз, снег, тундра, утеплённая одежда
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="summary-images">
+                        <div class="summary-img" onclick="showPage('geography-3')" style="background: linear-gradient(135deg, #E91E63, #9C27B0);">
+                            <div style="padding: 10px; color: white; font-size: 12px;">ментальная карта</div>
+                        </div>
+                        <div class="summary-img" onclick="showPage('geography-4')" style="background: linear-gradient(135deg, #4FC3F7, #81C784);">
+                            <div style="padding: 10px; color: white; font-size: 12px;">инфографика</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('home')">Начало</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('geography-1')">Повторить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== BIOLOGY SECTION ==================== -->
+
+        <!-- Biology Page 1 - Dialog -->
+        <div id="biology-1" class="page">
+            <div class="card">
+                <div class="message teacher" onclick="showPage('biology-2')">
+                    <span class="label">Учитель:</span> Я хочу, чтобы учащиеся поняли, как разные плоды распространяют свои семена. Мне нужно объяснить это просто и наглядно — возможно, через инфографику
+                </div>
+
+                <div class="message ai" onclick="showPage('biology-2')">
+                    <span class="label">ИИ:</span> Ты хочешь показать три основных способа: 🐦 зоохория — через животных, 💨 анемохория — через ветер, 💥 Автохория — самораскрытие плодов?
+                </div>
+
+                <div class="message teacher" onclick="showPage('biology-2')">
+                    <span class="label">Учитель:</span> Да. И чтобы они связали это с типами плодов: сочные — для животных, лёгкие — для ветра, раскрывающиеся — для автохории
+                </div>
+
+                <div class="message ai" onclick="showPage('biology-2')">
+                    <span class="label">ИИ:</span> Вот как можно это визуализировать
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('home')">На главную</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('biology-2')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biology Page 2 - AI Interface -->
+        <div id="biology-2" class="page">
+            <div class="card">
+                <div class="ai-interface">
+                    <div class="ai-header">
+                        <div class="ai-logo">✓</div>
+                        <span style="font-weight: 600;">AI Visual</span>
+                    </div>
+                    <div class="ai-content">
+                        <h2 class="ai-title">Какая у вас идея для интеллект-карты сегодня?</h2>
+                        <p class="ai-subtitle">Напишите, вставьте или загрузите — мы быстро превратим это в умную интеллект-карту.</p>
+
+                        <div class="ai-input" onclick="showPage('biology-3')">
+                            <p><strong>Плоды и способы распространения семян</strong></p>
+                            <ul style="margin-top: 10px; padding-left: 20px;">
+                                <li>Сочные плоды → животные (зоохория)</li>
+                                <li>Сухие плоды → ветер (анемохория), саморассеивание (автохория)</li>
+                            </ul>
+                        </div>
+
+                        <button class="create-btn" onclick="showPage('biology-3')">Создать →</button>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('biology-1')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('biology-3')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biology Page 3 - Mind Map -->
+        <div id="biology-3" class="page">
+            <div class="card">
+                <div class="mindmap-container">
+                    <h3 style="text-align: center; margin-bottom: 30px;">Ментальная карта: Распространение семян</h3>
+
+                    <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                        <div class="mindmap-center" onclick="showPage('biology-4')">
+                            Плоды и способы распространения семян
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <!-- Сочные плоды -->
+                        <div class="branch-item branch-pink" onclick="showPage('biology-4')">
+                            <strong>🍒 Сочные плоды</strong>
+                            <p style="margin-top: 10px; font-size: 14px;">Распространение животными (зоохория)</p>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Птицы, поедающие ягоды и разносящие семена</li>
+                                <li>Млекопитающие, разносящие семена с плодами</li>
+                            </ul>
+                        </div>
+
+                        <!-- Сухие плоды -->
+                        <div class="branch-item branch-blue" onclick="showPage('biology-4')">
+                            <strong>🍂 Сухие плоды</strong>
+                            <p style="margin-top: 10px; font-size: 14px;">Распространение ветром (анемохория)</p>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Семянки с крыловидными придатками для полёта</li>
+                                <li>Лёгкие, мелкие семена, легко уносимые ветром</li>
+                            </ul>
+                            <p style="margin-top: 10px; font-size: 14px;">Саморассеивание (автохория)</p>
+                            <ul style="margin-top: 5px; padding-left: 20px; font-size: 13px;">
+                                <li>Коробочки мака, раскрывающиеся при созревании</li>
+                                <li>Бобы, разлетающиеся при высыхании и разрыве</li>
+                            </ul>
+                        </div>
+
+                        <!-- Иллюстрации -->
+                        <div class="branch-item branch-teal" onclick="showPage('biology-4')">
+                            <strong>🖼️ Иллюстрации</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Птица с ягодой</li>
+                                <li>Ветер с семянками</li>
+                                <li>Коробочка мака, раскрывающаяся сама</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('biology-2')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('biology-4')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biology Page 4 - Illustrations -->
+        <div id="biology-4" class="page">
+            <div class="card">
+                <h3 style="text-align: center; margin-bottom: 20px;">Способы распространения семян</h3>
+
+                <div class="infographic-grid">
+                    <!-- Анемохория -->
+                    <div class="infographic-item" onclick="showPage('biology-5')">
+                        <div class="infographic-header anemochory">💨 АНЕМОХОРИЯ</div>
+                        <div class="infographic-body">
+                            <p><strong>Распространение ветром</strong></p>
+                            <ul style="margin-top: 15px; padding-left: 20px; font-size: 14px;">
+                                <li>Семена одуванчика с парашютами</li>
+                                <li>Крылатки клёна</li>
+                                <li>Пух тополя</li>
+                                <li>Лёгкие семена, уносимые ветром</li>
+                            </ul>
+                            <div style="background: #E8F5E9; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
+                                🌬️ Ветер переносит семена на большие расстояния
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Зоохория -->
+                    <div class="infographic-item" onclick="showPage('biology-5')">
+                        <div class="infographic-header zoochory">🐦 ЗООХОРИЯ</div>
+                        <div class="infographic-body">
+                            <p><strong>Распространение животными</strong></p>
+                            <ul style="margin-top: 15px; padding-left: 20px; font-size: 14px;">
+                                <li>Птица поедает ягоду</li>
+                                <li>Семена проходят через пищеварительную систему</li>
+                                <li>Помёт с семенами попадает в почву</li>
+                                <li>Прорастание нового растения</li>
+                            </ul>
+                            <div style="background: #FFF3E0; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
+                                🍒 Сочные плоды привлекают животных
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Автохория -->
+                    <div class="infographic-item" onclick="showPage('biology-5')">
+                        <div class="infographic-header autochory">💥 АВТОХОРИЯ</div>
+                        <div class="infographic-body">
+                            <p><strong>Самораскрытие плодов</strong></p>
+                            <ul style="margin-top: 15px; padding-left: 20px; font-size: 14px;">
+                                <li>Закрытая коробочка мака</li>
+                                <li>Частично открытая коробочка</li>
+                                <li>Полностью открытая коробочка</li>
+                                <li>Семена мака разлетаются</li>
+                            </ul>
+                            <div style="background: #F3E5F5; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
+                                💫 Плоды сами выбрасывают семена при созревании
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-teal" onclick="showPage('biology-3')">конкретизировать запрос</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('biology-5')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biology Page 5 - Download Options -->
+        <div id="biology-5" class="page">
+            <div class="card">
+                <h3 style="text-align: center; margin-bottom: 20px;">Готовые материалы</h3>
+
+                <div class="download-section">
+                    <div class="download-card" onclick="showPage('biology-6')">
+                        <p style="margin-bottom: 15px;"><strong>скачать инфографику</strong></p>
+                        <div class="toolbar">
+                            <button class="toolbar-btn green">📤 Поделиться</button>
+                            <button class="toolbar-btn">🎨 Тема</button>
+                            <button class="toolbar-btn green">⬇️ Загрузить</button>
+                        </div>
+                        <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                            <p style="font-size: 13px;">Ментальная карта распространения семян</p>
+                        </div>
+                    </div>
+
+                    <div class="download-card" onclick="showPage('biology-6')">
+                        <p style="margin-bottom: 15px;"><strong>редактировать / скачать инфографику</strong></p>
+                        <div class="toolbar">
+                            <button class="toolbar-btn">HD Upscale</button>
+                            <button class="toolbar-btn">Remove bg</button>
+                            <button class="toolbar-btn">Mockup</button>
+                            <button class="toolbar-btn">Edit Elements</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <div style="background: #E8F5E9; padding: 15px; border-radius: 10px; flex: 1;">
+                                <p style="font-weight: bold; color: #2E7D32;">АНЕМОХОРИЯ</p>
+                            </div>
+                            <div style="background: #FFF3E0; padding: 15px; border-radius: 10px; flex: 1;">
+                                <p style="font-weight: bold; color: #E65100;">ЗООХОРИЯ</p>
+                            </div>
+                            <div style="background: #F3E5F5; padding: 15px; border-radius: 10px; flex: 1;">
+                                <p style="font-weight: bold; color: #7B1FA2;">АВТОХОРИЯ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('biology-4')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('biology-6')">Попробовать</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biology Page 6 - Summary -->
+        <div id="biology-6" class="page">
+            <div class="card">
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> Я хочу, чтобы учащиеся поняли, как разные плоды распространяют свои семена. Мне нужно объяснить это просто и наглядно — возможно, через инфографику
+                </div>
+
+                <div class="message ai">
+                    <span class="label">ИИ:</span> Ты хочешь показать три основных способа: 🐦 зоохория — через животных, 💨 анемохория — через ветер, 💥 Автохория — самораскрытие плодов?
+                </div>
+
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> Да. И чтобы они связали это с типами плодов: сочные — для животных, лёгкие — для ветра, раскрывающиеся — для автохории
+                </div>
+
+                <div class="message ai">
+                    <span class="label">ИИ:</span> Вот как можно это визуализировать
+                </div>
+
+                <div class="summary-content" style="margin-top: 20px;">
+                    <div class="copy-box">
+                        <div class="copy-icon">📋</div>
+                        <div>
+                            <p><strong>Скопируй этот текст, чтобы нарисовать ментальную карту</strong></p>
+                            <p style="margin-top: 10px; font-size: 14px;">
+                                Плоды и способы распространения семян<br>
+                                Сочные плоды → животные (зоохория)<br>
+                                Сухие плоды → ветер (анемохория), саморассеивание (автохория)<br>
+                                Иллюстрации: птица с ягодой, ветер с семянками, коробочка мака, раскрывающаяся сама.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="summary-images">
+                        <div class="summary-img" onclick="showPage('biology-3')" style="background: linear-gradient(135deg, #E91E63, #9C27B0);">
+                            <div style="padding: 10px; color: white; font-size: 12px;">ментальная карта</div>
+                        </div>
+                        <div class="summary-img" onclick="showPage('biology-4')" style="background: linear-gradient(135deg, #4CAF50, #8BC34A);">
+                            <div style="padding: 10px; color: white; font-size: 12px;">инфографика</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('home')">Начало</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('biology-1')">Повторить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CHEMISTRY SECTION ==================== -->
+
+        <!-- Chemistry Page 1 - Dialog -->
+        <div id="chemistry-1" class="page">
+            <div class="card">
+                <div class="message teacher" onclick="showPage('chemistry-2')">
+                    <span class="label">Учитель:</span> Я хочу создать инфографику для урока химии. Тема — классификация химических реакций. Мне нужно, чтобы она была наглядной, логичной и подходила для объяснения на уроке
+                </div>
+
+                <div class="message ai" onclick="showPage('chemistry-2')">
+                    <span class="label">ИИ:</span> Ты хочешь показать основные типы реакций: соединения, разложения, замещения и обмена?
+                </div>
+
+                <div class="message teacher" onclick="showPage('chemistry-2')">
+                    <span class="label">Учитель:</span> Да. И чтобы учащиеся могли быстро запомнить примеры и признаки: выделение газа, осадок, изменение цвета, тепловой эффект...
+                </div>
+
+                <div class="message ai" onclick="showPage('chemistry-2')">
+                    <span class="label">ИИ:</span> Приступим
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('home')">На главную</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('chemistry-2')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chemistry Page 2 - AI Interface -->
+        <div id="chemistry-2" class="page">
+            <div class="card">
+                <div class="ai-interface">
+                    <div class="ai-header">
+                        <div class="ai-logo">✓</div>
+                        <span style="font-weight: 600;">AI Visual</span>
+                    </div>
+                    <div class="ai-content">
+                        <h2 class="ai-title">Какая у вас идея для интеллект-карты сегодня?</h2>
+                        <p class="ai-subtitle">Напишите, вставьте или загрузите — мы быстро превратим это в умную интеллект-карту.</p>
+
+                        <div class="ai-input" onclick="showPage('chemistry-3')">
+                            <p><strong>В центре — «Химические реакции»</strong></p>
+                            <p>Ветви:</p>
+                            <ul style="padding-left: 20px;">
+                                <li>Реакции соединения (A + B → AB)</li>
+                                <li>Реакции разложения (AB → A + B)</li>
+                                <li>Реакции замещения (A + BC → AC + B)</li>
+                                <li>Реакции обмена (AB + CD → AD + CB)</li>
+                            </ul>
+                            <p>Для каждой — уравнение, пример, визуальный признак</p>
+                        </div>
+
+                        <button class="create-btn" onclick="showPage('chemistry-3')">Создать →</button>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('chemistry-1')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('chemistry-3')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chemistry Page 3 - Mind Map -->
+        <div id="chemistry-3" class="page">
+            <div class="card">
+                <div class="mindmap-container">
+                    <h3 style="text-align: center; margin-bottom: 30px;">Ментальная карта: Химические реакции</h3>
+
+                    <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                        <div class="mindmap-center" style="background: linear-gradient(135deg, #2196F3, #1976D2);" onclick="showPage('chemistry-4')">
+                            Химические реакции
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <!-- Реакции соединения -->
+                        <div class="branch-item branch-green" onclick="showPage('chemistry-4')">
+                            <strong>⚗️ Реакции соединения</strong>
+                            <div class="reaction-formula">A + B → AB</div>
+                            <p style="font-size: 13px;"><strong>Пример:</strong> Синтез воды: 2H₂ + O₂ → 2H₂O</p>
+                            <p style="font-size: 13px;"><strong>Признак:</strong> Выделение тепла и образование новой субстанции</p>
+                        </div>
+
+                        <!-- Реакции разложения -->
+                        <div class="branch-item branch-orange" onclick="showPage('chemistry-4')">
+                            <strong>🔥 Реакции разложения</strong>
+                            <div class="reaction-formula">AB → A + B</div>
+                            <p style="font-size: 13px;"><strong>Пример:</strong> Разложение карбоната кальция: CaCO₃ → CaO + CO₂</p>
+                            <p style="font-size: 13px;"><strong>Признак:</strong> Выделение газа и изменение цвета</p>
+                        </div>
+
+                        <!-- Реакции замещения -->
+                        <div class="branch-item branch-blue" onclick="showPage('chemistry-4')">
+                            <strong>🔄 Реакции замещения</strong>
+                            <div class="reaction-formula">A + BC → AC + B</div>
+                            <p style="font-size: 13px;"><strong>Пример:</strong> Замещение меди железом: Fe + CuSO₄ → FeSO₄ + Cu</p>
+                            <p style="font-size: 13px;"><strong>Признак:</strong> Осаждение металла и изменение раствора</p>
+                        </div>
+
+                        <!-- Реакции обмена -->
+                        <div class="branch-item branch-pink" onclick="showPage('chemistry-4')">
+                            <strong>↔️ Реакции обмена</strong>
+                            <div class="reaction-formula">AB + CD → AD + CB</div>
+                            <p style="font-size: 13px;"><strong>Пример:</strong> AgNO₃ + NaCl → AgCl↓ + NaNO₃</p>
+                            <p style="font-size: 13px;"><strong>Признак:</strong> Появление осадка или помутнение раствора</p>
+                        </div>
+
+                        <!-- Общие признаки реакций -->
+                        <div class="branch-item branch-yellow" onclick="showPage('chemistry-4')">
+                            <strong>👁️ Общие признаки реакций</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Изменение цвета</li>
+                                <li>Выделение газа</li>
+                                <li>Образование осадка</li>
+                                <li>Выделение или поглощение тепла</li>
+                            </ul>
+                        </div>
+
+                        <!-- Значение химических реакций -->
+                        <div class="branch-item branch-teal" onclick="showPage('chemistry-4')">
+                            <strong>🌍 Значение химических реакций</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 13px;">
+                                <li>Промышленное применение</li>
+                                <li>Биологические процессы</li>
+                                <li>Экологические аспекты</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('chemistry-2')">Назад</button>
+                    <button class="btn btn-green nav-right" onclick="showPage('chemistry-4')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chemistry Page 4 - Infographic -->
+        <div id="chemistry-4" class="page">
+            <div class="card">
+                <h3 style="text-align: center; margin-bottom: 20px;">Классификация химических реакций</h3>
+
+                <div class="chemistry-diagram">
+                    <div class="reaction-center" onclick="showPage('chemistry-5')">
+                        ХИМИЧЕСКИЕ<br>РЕАКЦИИ
+                    </div>
+
+                    <div class="reactions-grid">
+                        <div class="reaction-card synthesis" onclick="showPage('chemistry-5')">
+                            <div class="reaction-title" style="color: #2E7D32;">⚗️ Реакции соединения</div>
+                            <div class="reaction-formula">Уравнение: A + B → AB</div>
+                            <p style="font-size: 14px; margin-top: 10px;"><strong>Пример:</strong> 2Na + Cl₂ = 2NaCl</p>
+                            <p style="font-size: 13px; color: #666; margin-top: 5px;">Визуальный признак: Выделение тепла и света</p>
+                        </div>
+
+                        <div class="reaction-card decomposition" onclick="showPage('chemistry-5')">
+                            <div class="reaction-title" style="color: #E65100;">🔥 Реакции разложения</div>
+                            <div class="reaction-formula">Уравнение: AB → A + B</div>
+                            <p style="font-size: 14px; margin-top: 10px;"><strong>Пример:</strong> 2H₂O = 2H₂ + O₂</p>
+                            <p style="font-size: 13px; color: #666; margin-top: 5px;">Визуальный признак: Выделение газа</p>
+                        </div>
+
+                        <div class="reaction-card substitution" onclick="showPage('chemistry-5')">
+                            <div class="reaction-title" style="color: #1565C0;">🔄 Реакции замещения</div>
+                            <div class="reaction-formula">Уравнение: A + BC = AC + B</div>
+                            <p style="font-size: 14px; margin-top: 10px;"><strong>Пример:</strong> Zn + 2HCl = ZnCl₂ + H₂</p>
+                            <p style="font-size: 13px; color: #666; margin-top: 5px;">Визуальный признак: Изменение цвета раствора</p>
+                        </div>
+
+                        <div class="reaction-card exchange" onclick="showPage('chemistry-5')">
+                            <div class="reaction-title" style="color: #7B1FA2;">↔️ Реакции обмена</div>
+                            <div class="reaction-formula">Уравнение: AB + CD = AD + CB</div>
+                            <p style="font-size: 14px; margin-top: 10px;"><strong>Пример:</strong> AgNO₃ + NaCl → AgCl↓ + NaNO₃</p>
+                            <p style="font-size: 13px; color: #666; margin-top: 5px;">Визуальный признак: Образование осадка</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-teal" onclick="showPage('chemistry-3')">конкретизировать запрос</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('chemistry-5')">Продолжение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chemistry Page 5 - Download Options -->
+        <div id="chemistry-5" class="page">
+            <div class="card">
+                <h3 style="text-align: center; margin-bottom: 20px;">Готовые материалы</h3>
+
+                <div class="download-section">
+                    <div class="download-card" onclick="showPage('chemistry-6')">
+                        <p style="margin-bottom: 15px;"><strong>скачать инфографику</strong></p>
+                        <div class="toolbar">
+                            <button class="toolbar-btn green">📤 Поделиться</button>
+                            <button class="toolbar-btn">🎨 Тема</button>
+                            <button class="toolbar-btn green">⬇️ Загрузить</button>
+                        </div>
+                        <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                            <p style="font-size: 13px;">Ментальная карта химических реакций</p>
+                        </div>
+                    </div>
+
+                    <div class="download-card" onclick="showPage('chemistry-6')">
+                        <p style="margin-bottom: 15px;"><strong>редактировать / скачать инфографику</strong></p>
+                        <div class="toolbar">
+                            <button class="toolbar-btn">HD Upscale</button>
+                            <button class="toolbar-btn">Remove bg</button>
+                            <button class="toolbar-btn">Mockup</button>
+                            <button class="toolbar-btn">Edit Elements</button>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #64B5F6, #42A5F5); padding: 20px; border-radius: 10px; text-align: center;">
+                            <p style="color: white; font-weight: bold;">ХИМИЧЕСКИЕ РЕАКЦИИ</p>
+                            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                                <span style="background: #4CAF50; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">Соединения</span>
+                                <span style="background: #FF9800; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">Разложения</span>
+                                <span style="background: #2196F3; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">Замещения</span>
+                                <span style="background: #9C27B0; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">Обмена</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('chemistry-4')">Назад</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('chemistry-6')">Попробовать</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chemistry Page 6 - Summary -->
+        <div id="chemistry-6" class="page">
+            <div class="card">
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> Я хочу создать инфографику для урока химии. Тема — классификация химических реакций. Мне нужно, чтобы она была наглядной, логичной и подходила для объяснения на уроке
+                </div>
+
+                <div class="message ai">
+                    <span class="label">ИИ:</span> Ты хочешь показать основные типы реакций: соединения, разложения, замещения и обмена?
+                </div>
+
+                <div class="message teacher">
+                    <span class="label">Учитель:</span> Да. И чтобы учащиеся могли быстро запомнить примеры и признаки: выделение газа, осадок, изменение цвета, тепловой эффект...
+                </div>
+
+                <div class="message ai">
+                    <span class="label">ИИ:</span> Приступим
+                </div>
+
+                <div class="summary-content" style="margin-top: 20px;">
+                    <div class="copy-box">
+                        <div class="copy-icon">📋</div>
+                        <div>
+                            <p><strong>Скопируй этот текст, чтобы нарисовать ментальную карту</strong></p>
+                            <p style="margin-top: 10px; font-size: 14px;">
+                                В центре — «Химические реакции»<br>
+                                Ветви:<br>
+                                Реакции соединения (A + B → AB)<br>
+                                Реакции разложения (AB → A + B)<br>
+                                Реакции замещения (A + BC → AC + B)<br>
+                                Реакции обмена (AB + CD → AD + CB)<br>
+                                Для каждой — уравнение, пример, визуальный признак
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="summary-images">
+                        <div class="summary-img" onclick="showPage('chemistry-3')" style="background: linear-gradient(135deg, #E91E63, #9C27B0);">
+                            <div style="padding: 10px; color: white; font-size: 12px;">ментальная карта</div>
+                        </div>
+                        <div class="summary-img" onclick="showPage('chemistry-4')" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
+                            <div style="padding: 10px; color: white; font-size: 12px;">инфографика</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-yellow" onclick="showPage('home')">Начало</button>
+                    <button class="btn btn-purple nav-right" onclick="showPage('chemistry-1')">Повторить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Add touch feedback for mobile
+        document.querySelectorAll('.message, .branch-item, .subject-btn, .btn, .download-card, .infographic-item, .reaction-card, .legend-item').forEach(el => {
+            el.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

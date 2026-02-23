@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Антиплагиат — НейроДиалог</title>
+<style>
+
+@keyframes blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.page {
+  display: none;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page.active {
+  display: block;
+}
+
+.container {
+  border: 3px dashed #7c4dff;
+  border-radius: 20px;
+  padding: 40px;
+  background: white;
+  min-height: 400px;
+}
+
+/* ===== Chat Messages ===== */
+.msg-teacher {
+  background: #e8e0f0;
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  max-width: 90%;
+}
+
+.msg-teacher .label {
+  color: #7c4dff;
+  font-weight: bold;
+}
+
+.msg-ai {
+  background: #fff3cd;
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  max-width: 90%;
+}
+
+.msg-ai .label {
+  color: #f5a623;
+  font-weight: bold;
+}
+
+/* ===== Buttons ===== */
+.continue-btn {
+  display: inline-block;
+  padding: 10px 25px;
+  background: #9b7fdb;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.continue-btn:hover { background: #7c4dff; }
+
+.start-btn {
+  display: inline-block;
+  padding: 10px 25px;
+  background: #9b7fdb;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.start-btn:hover { background: #7c4dff; }
+
+.try-btn {
+  display: inline-block;
+  padding: 10px 30px;
+  background: #9b7fdb;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.try-btn:hover { background: #7c4dff; }
+
+.continue-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.continue-wrapper-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ===== Copy block with text ===== */
+.copy-block {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.copy-icon-box {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #ff6b6b;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copy-icon-box:hover { background: #fff0f0; }
+
+.copy-text-area {
+  flex: 1;
+  min-width: 200px;
+}
+
+.copy-hint {
+  font-size: 12px;
+  color: #888;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.copy-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* ===== Service card ===== */
+.service-card {
+  background: white;
+  border: 1.5px solid #eee;
+  border-radius: 12px;
+  padding: 14px 18px;
+  max-width: 280px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.service-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+.service-card-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #222;
+}
+
+.service-card-desc {
+  font-size: 11.5px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.service-card-url {
+  font-size: 11px;
+  color: #7c4dff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ===== Blink ===== */
+.blink-hand {
+  font-size: 28px;
+  animation: blink 1s infinite;
+  display: inline-block;
+}
+
+/* ===== AI Detector mockup ===== */
+.detector-wrapper {
+  background: #f0f4f0;
+  border-radius: 12px;
+  padding: 30px 35px;
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.detector-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 6px;
+}
+
+.detector-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.detector-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.detector-tab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #ddd;
+  background: white;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detector-tab.active {
+  background: white;
+  border-color: #333;
+  color: #111;
+  font-weight: bold;
+}
+
+.detector-tab.has-beta::after {
+  content: ' Beta';
+  font-size: 10px;
+  color: #888;
+}
+
+.detector-body {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.detector-left {
+  flex: 1;
+  min-width: 260px;
+  background: white;
+  border-radius: 10px;
+  padding: 18px;
+  min-height: 300px;
+  position: relative;
+}
+
+.detector-placeholder {
+  color: #aaa;
+  font-size: 13.5px;
+  margin-bottom: 15px;
+}
+
+.detector-btn-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.detector-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid #28a745;
+  border-radius: 20px;
+  background: white;
+  color: #28a745;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.detector-btn:hover { background: #f0fff4; }
+
+.detector-textarea {
+  width: 100%;
+  min-height: 180px;
+  border: none;
+  outline: none;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #333;
+  resize: none;
+  font-family: inherit;
+  font-style: italic;
+}
+
+.detector-detect-btn {
+  display: block;
+  margin: 15px auto 0;
+  padding: 10px 30px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.detector-detect-btn:hover { background: #218838; }
+
+.detector-right {
+  width: 230px;
+  background: white;
+  border-radius: 10px;
+  padding: 18px;
+  flex-shrink: 0;
+}
+
+.detector-add-text {
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.detector-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.detector-stat-label {
+  font-size: 12.5px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-orange { background: #f5a623; }
+.dot-gray   { background: #ccc; }
+.dot-light  { background: #ddd; }
+
+.detector-stat-val {
+  font-size: 12.5px;
+  color: #777;
+}
+
+.detector-understand {
+  font-size: 12px;
+  color: #28a745;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+/* ===== Language dropdown ===== */
+.lang-dropdown {
+  background: white;
+  border: 1.5px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px 20px;
+  margin-top: 5px;
+  max-width: 380px;
+}
+
+.lang-item {
+  font-size: 13px;
+  color: #333;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.lang-item:hover { background: #f5f5f5; }
+
+.lang-item.selected {
+  color: #28a745;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ===== Result highlight ===== */
+.text-highlighted {
+  background: #ffc107;
+  border-radius: 3px;
+  padding: 1px 0;
+}
+
+.result-big-percent {
+  font-size: 52px;
+  font-weight: 900;
+  color: #111;
+  line-height: 1;
+}
+
+.result-big-percent sup {
+  font-size: 28px;
+}
+
+.result-label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quillbot-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.bar-chart {
+  display: flex;
+  height: 100px;
+  gap: 10px;
+  align-items: flex-end;
+  margin: 15px 0 8px;
+}
+
+.bar {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+}
+
+.bar.ai   { background: #f5a623; height: 100%; }
+.bar.human { background: #eee; height: 10%; }
+
+.bar-labels {
+  display: flex;
+  justify-content: space-around;
+  font-size: 11.5px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.stat-row-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.stat-pct-orange { color: #f5a623; font-weight: bold; font-size: 13.5px; }
+.stat-pct-gray   { color: #aaa; font-size: 13.5px; }
+
+/* ===== Plagiat.AI mockup ===== */
+.plagiat-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 25px 30px;
+}
+
+.plagiat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.plagiat-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #111;
+}
+
+.plagiat-dot {
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #7c4dff, #e91e63);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.plagiat-counter {
+  text-align: right;
+}
+
+.plagiat-counter .num {
+  font-size: 22px;
+  font-weight: 900;
+  color: #f5a623;
+}
+
+.plagiat-counter .sub {
+  font-size: 11px;
+  color: #888;
+}
+
+.plagiat-body {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.plagiat-left {
+  max-width: 340px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.plagiat-hint {
+  font-size: 13px;
+  color: #e91e63;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.plagiat-big-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #111;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.plagiat-big-title span { color: #e91e63; }
+
+.plagiat-small-text {
+  font-size: 12px;
+  color: #777;
+  line-height: 1.5;
+}
+
+.plagiat-right {
+  flex: 1;
+  min-width: 240px;
+}
+
+.plagiat-textarea {
+  width: 100%;
+  min-height: 180px;
+  border: 2px solid #7c4dff;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 13.5px;
+  color: #333;
+  line-height: 1.6;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  background: #fafeff;
+}
+
+.plagiat-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.plagiat-btn-file {
+  padding: 10px 20px;
+  background: #7c4dff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.plagiat-btn-check {
+  padding: 10px 22px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.plagiat-btn-check:hover { background: #555; }
+
+.plagiat-word-count {
+  font-size: 12px;
+  color: #aaa;
+  margin-left: auto;
+}
+
+/* ===== Plagiat Result ===== */
+.result-wrapper {
+  padding: 10px 0;
+}
+
+.result-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: #111;
+  margin-bottom: 20px;
+}
+
+.result-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
+
+.result-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 30px;
+  margin-bottom: 20px;
+}
+
+.result-stat-item label {
+  font-size: 12px;
+  color: #777;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.progress-bar-outer {
+  height: 14px;
+  background: #eee;
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  border-radius: 7px;
+}
+
+.progress-bar-inner.green  { background: #4caf50; }
+.progress-bar-inner.purple { background: #7c4dff; }
+.progress-bar-inner.gray   { background: #bbb; }
+
+.progress-val {
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+}
+
+.ai-check-section {
+  margin-bottom: 18px;
+}
+
+.ai-check-label {
+  font-size: 12.5px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.ai-bar-outer {
+  height: 22px;
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ai-bar-human {
+  background: #5c6bc0;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.ai-bar-ai {
+  background: #e91e63;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.sources-section {
+  margin-top: 15px;
+}
+
+.sources-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.sources-table {
+  width: 100%;
+  font-size: 12px;
+  color: #444;
+}
+
+.sources-table td {
+  padding: 3px 5px;
+  vertical-align: top;
+}
+
+.sources-table td:first-child {
+  color: #7c4dff;
+  max-width: 480px;
+  word-break: break-all;
+}
+
+.sources-table td:last-child {
+  color: #777;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.result-text-section {
+  margin-top: 15px;
+}
+
+.result-text-label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.result-text-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #333;
+}
+
+.highlighted-purple { color: #7c4dff; }
+
+/* ===== Annotation note ===== */
+.note-tag {
+  display: inline-block;
+  background: #e8e0f0;
+  color: #7c4dff;
+  border-radius: 12px;
+  padding: 5px 14px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  body { padding: 15px; }
+  .container { padding: 25px; min-height: auto; }
+  .detector-body { flex-direction: column; }
+  .detector-right { width: 100%; }
+  .plagiat-body { flex-direction: column; }
+  .result-stats-grid { grid-template-columns: 1fr; }
+  .lang-dropdown { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  body { padding: 10px; }
+  .container { padding: 15px; border-radius: 15px; }
+  .msg-teacher, .msg-ai { max-width: 100%; padding: 12px 15px; }
+  .continue-btn, .start-btn, .try-btn { font-size: 14px; padding: 10px 18px; }
+  .continue-wrapper { flex-direction: column; align-items: stretch; }
+  .continue-wrapper a, .continue-wrapper button { text-align: center; }
+  .detector-wrapper { padding: 18px 15px; }
+  .detector-title { font-size: 22px; }
+  .plagiat-wrapper { padding: 18px 15px; }
+  .plagiat-big-title { font-size: 20px; }
+  .result-big-percent { font-size: 38px; }
+  .lang-dropdown { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
+  .copy-block { flex-direction: column; }
+  .sources-table { font-size: 11px; }
+}
+
+@media (max-width: 400px) {
+  .detector-title { font-size: 18px; }
+  .result-big-percent { font-size: 32px; }
+}
+
+</style>
+</head>
+<body>
+
+
+<!-- ==================== СТРАНИЦА 1: Диалог + ресурсы Plagiat.AI ==================== -->
+<div id="page1" class="page active">
+  <div class="container">
+    <div class="msg-teacher">
+      <span class="label">Учитель:</span> У меня есть проблема....
+    </div>
+
+    <div class="msg-teacher">
+      <span class="label">Учитель:</span> Учащийся принёс работу, которая оказалась списанной или ИИ написанной. Формально задание выполнено, но смысла в таком подходе нет — знания не проверены, умения не развиты
+    </div>
+
+    <div class="msg-ai">
+      <span class="label">ИИ:</span> Я предлагаю "Рерайт-терапию". Отправить обратно переписать работу, но уже своими словами. И пусть потом объяснит, почему именно так, а не иначе. Творческий подход, так сказать
+    </div>
+
+    <div class="msg-ai">
+      <span class="label">ИИ:</span> Но вообще-то надо сперва доказать факт несамостоятельного написания. И вот таким образом
+    </div>
+
+    <!-- Copy block with service card -->
+    <div class="copy-block">
+      <div>
+        <div class="copy-hint">Скопируй этот текст и попробуй</div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div class="copy-icon-box" onclick="copyText()" title="Копировать">📋</div>
+          <div class="copy-text">
+            Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие. Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="window.open('https://plagiat.ai','_blank')">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div class="plagiat-dot" style="width:18px;height:18px;"></div>
+          <span style="font-weight:bold;font-size:15px;">Plagiat.AI</span>
+        </div>
+        <div class="service-card-title">Бесплатный антиплагиат — проверка больших текстов AI</div>
+        <div class="service-card-desc">Проверка текста на антиплагиат бесплатно и без регистрации любого большого объёма без ограничени...</div>
+        <div class="service-card-url">🔗 Plagiat.AI</div>
+        <span class="blink-hand" style="font-size:22px;margin-top:4px;">👆</span>
+      </div>
+    </div>
+
+    <div class="continue-wrapper">
+      <a href="#" class="start-btn" onclick="showPage('page active'); return false;">Начало</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 2: Диалог + кнопки внизу ==================== -->
+<div id="page2" class="page">
+  <div class="container">
+    <div class="msg-teacher">
+      <span class="label">Учитель:</span> У меня есть проблема....
+    </div>
+
+    <div class="msg-teacher">
+      <span class="label">Учитель:</span> Учащийся принёс работу, которая оказалась списанной или ИИ написанной. Формально задание выполнено, но смысла в таком подходе нет — знания не проверены, умения не развиты
+    </div>
+
+    <div class="msg-ai">
+      <span class="label">ИИ:</span> Я предлагаю "Рерайт-терапию". Отправить обратно переписать работу, но уже своими словами. И пусть потом объяснит, почему именно так, а не иначе. Творческий подход, так сказать
+    </div>
+
+    <div class="msg-ai">
+      <span class="label">ИИ:</span> Но вообще-то надо сперва доказать факт несамостоятельного написания. И вот таким образом
+    </div>
+
+    <div class="continue-wrapper">
+      <a href="#" class="start-btn" onclick="showPage('page1'); return false;">На главную</a>
+      <a href="#" class="continue-btn" onclick="showPage('page3'); return false;">Это могло произойти с любым учителем</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 3: AI Detector — пустой ==================== -->
+<div id="page3" class="page">
+  <div class="container">
+    <div class="detector-wrapper">
+      <div class="detector-title">AI Detector</div>
+      <div class="detector-subtitle">Paste or enter your text below into our AI Detector to get an instant AI detection report.</div>
+
+      <div style="position:relative; display:inline-block; margin-bottom:15px;">
+        <div class="detector-tabs">
+          <div class="detector-tab active">English</div>
+          <div class="detector-tab">French</div>
+          <div class="detector-tab">Spanish</div>
+          <div class="detector-tab">German</div>
+          <div class="detector-tab" onclick="showPage('page4')" style="cursor:pointer;">All ▾</div>
+        </div>
+        <!-- Annotation -->
+        <div style="position:absolute;top:-5px;left:310px;display:flex;align-items:center;gap:8px;white-space:nowrap;">
+          <div style="width:36px;height:36px;border:3px solid #e91e63;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#e91e63;flex-shrink:0;">↺</div>
+          <div style="background:#e8e0f0;border-radius:10px;padding:6px 12px;font-size:13px;color:#333;">Необходимо<br>выбрать язык</div>
+        </div>
+      </div>
+
+      <div class="detector-body">
+        <div class="detector-left">
+          <div class="detector-placeholder">To analyze text, add at least 40 words.</div>
+          <div class="detector-btn-row">
+            <button class="detector-btn">📋 Paste text</button>
+            <button class="detector-btn">📄 Upload doc</button>
+          </div>
+        </div>
+
+        <div class="detector-right">
+          <div class="detector-add-text">Add text to<br>begin analysis</div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-orange"></span> AI-generated ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-gray"></span> Human-written & AI-refined ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-light"></span> Human-written ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-understand">∨ Understanding your results</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:15px;">
+        <button class="detector-detect-btn">Detect AI</button>
+      </div>
+    </div>
+
+    <div class="continue-wrapper-right">
+      <a href="#" class="start-btn" onclick="showPage('page1'); return false;">На главную</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 4: AI Detector — выбор языка Russian ==================== -->
+<div id="page4" class="page">
+  <div class="container">
+    <div class="detector-wrapper">
+      <div class="detector-title">AI Detector</div>
+      <div class="detector-subtitle">Paste or enter your text below into our AI Detector to get an instant AI detection report.</div>
+
+      <div class="detector-tabs" style="margin-bottom:10px;">
+        <div class="detector-tab">English</div>
+        <div class="detector-tab active">Russian</div>
+        <div class="detector-tab">French</div>
+        <div class="detector-tab">Spanish</div>
+        <div class="detector-tab active" style="background:#f5f5f5;">All ▴</div>
+      </div>
+
+      <!-- Language dropdown -->
+      <div class="lang-dropdown" style="margin-bottom:15px;">
+        <span class="lang-item">Afrikaans</span>
+        <span class="lang-item">Hindi</span>
+        <span class="lang-item">Romanian</span>
+        <span class="lang-item">Chinese</span>
+        <span class="lang-item">Indonesian</span>
+        <span class="lang-item selected">Russian ✓</span>
+        <span class="lang-item">Danish</span>
+        <span class="lang-item">Italian</span>
+        <span class="lang-item">Spanish</span>
+        <span class="lang-item">Dutch</span>
+        <span class="lang-item">Japanese</span>
+        <span class="lang-item">Swedish</span>
+        <span class="lang-item">English</span>
+        <span class="lang-item">Malay</span>
+        <span class="lang-item">Tagalog</span>
+        <span class="lang-item">French</span>
+        <span class="lang-item">Polish</span>
+        <span class="lang-item">Turkish</span>
+        <span class="lang-item">German</span>
+        <span class="lang-item">Portuguese</span>
+        <span class="lang-item">Ukrainian</span>
+      </div>
+
+      <div class="detector-body">
+        <div class="detector-left">
+          <div class="detector-placeholder">To analyze text, add at least 40 words.</div>
+          <div class="detector-btn-row">
+            <button class="detector-btn">📋 Paste text</button>
+            <button class="detector-btn">📄 Upload doc</button>
+          </div>
+        </div>
+
+        <div class="detector-right">
+          <div class="detector-add-text">Add text to<br>begin analysis</div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-orange"></span> AI-generated ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-light"></span> Human-written ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-understand">∨ Understanding your results</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:15px;">
+        <button class="detector-detect-btn">Detect AI</button>
+      </div>
+    </div>
+
+    <div class="continue-wrapper-right">
+      <a href="#" class="continue-btn" onclick="showPage('page5'); return false;">Продолжение</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 5: AI Detector — текст вставлен ==================== -->
+<div id="page5" class="page">
+  <div class="container">
+    <div class="detector-wrapper">
+      <div class="detector-title">AI Detector</div>
+      <div class="detector-subtitle">Paste or enter your text below into our AI Detector to get an instant AI detection report.</div>
+
+      <div class="detector-tabs" style="margin-bottom:15px;">
+        <div class="detector-tab">English</div>
+        <div class="detector-tab active">Russian</div>
+        <div class="detector-tab">French</div>
+        <div class="detector-tab">Spanish</div>
+        <div class="detector-tab">All ▾</div>
+      </div>
+
+      <div class="detector-body">
+        <div class="detector-left">
+          <div class="detector-placeholder">To analyze text, add at least 40 words.</div>
+          <div class="detector-btn-row">
+            <button class="detector-btn">📋 Paste text</button>
+            <span style="color:#e91e63;font-size:12.5px;font-style:italic;">Можно вставить текст или загрузить документ</span>
+            <button class="detector-btn">📄 Upload doc</button>
+          </div>
+          <textarea class="detector-textarea" readonly>Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие. Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.</textarea>
+        </div>
+
+        <div class="detector-right">
+          <div class="detector-add-text">Add text to<br>begin analysis</div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-orange"></span> AI-generated ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-stat-row">
+            <span class="detector-stat-label"><span class="dot dot-light"></span> Human-written ⓘ</span>
+            <span class="detector-stat-val">–%</span>
+          </div>
+          <div class="detector-understand">∨ Understanding your results</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:15px;">
+        <button class="detector-detect-btn">Detect AI</button>
+      </div>
+    </div>
+
+    <div class="continue-wrapper-right">
+      <a href="#" class="continue-btn" onclick="showPage('page6'); return false;">Продолжение</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 6: AI Detector — результат 100% ==================== -->
+<div id="page6" class="page">
+  <div class="container">
+    <div class="detector-wrapper">
+      <div class="detector-title">AI Detector</div>
+      <div class="detector-subtitle">Paste or enter your text below into our AI Detector to get an instant AI detection report.</div>
+
+      <div class="detector-tabs" style="margin-bottom:15px;">
+        <div class="detector-tab">English</div>
+        <div class="detector-tab active">Russian <span style="font-size:10px;color:#aaa;">Beta</span></div>
+        <div class="detector-tab">French</div>
+        <div class="detector-tab">Spanish</div>
+        <div class="detector-tab">All ▾</div>
+      </div>
+
+      <div class="detector-body">
+        <div class="detector-left">
+          <div style="background:#ffc10733;border-radius:6px;padding:12px;margin-bottom:12px;line-height:1.6;font-size:13.5px;color:#333;">
+            <span class="text-highlighted">Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие. Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.</span>
+          </div>
+          <p style="font-size:13px;color:#555;font-style:italic;">Этот текст был полностью сгенерирован ИИ.<br>Copilote. спасибо!</p>
+        </div>
+
+        <div class="detector-right">
+          <div class="result-big-percent">100<sup>%</sup></div>
+          <div class="result-label">of text is likely AI ⓘ</div>
+          <div class="quillbot-badge">
+            <span style="background:#28a745;color:white;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;">Q</span>
+            QuillBot
+          </div>
+
+          <div class="bar-chart">
+            <div class="bar ai"></div>
+            <div class="bar human"></div>
+          </div>
+          <div class="bar-labels">
+            <span>AI</span>
+            <span>Human</span>
+          </div>
+
+          <div class="stat-row-result">
+            <span class="detector-stat-label"><span class="dot dot-orange"></span> AI-generated ⓘ</span>
+            <span class="stat-pct-orange">100%</span>
+          </div>
+          <div class="stat-row-result">
+            <span class="detector-stat-label"><span class="dot dot-light"></span> Human-written ⓘ</span>
+            <span class="stat-pct-gray">0%</span>
+          </div>
+
+          <div class="detector-understand" style="margin-top:12px;">∧ Understanding your results</div>
+          <div style="font-size:11.5px;color:#666;margin-top:6px;">Our AI detector flags text that may be AI-generated. Use your best</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="continue-wrapper-right">
+      <a href="#" class="continue-btn" onclick="showPage('page7'); return false;">Попробовать</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 7: Диалог + ресурс QuillBot ==================== -->
+<div id="page7" class="page">
+  <div class="container">
+    <div class="msg-teacher">
+      <span class="label">Учитель:</span> У меня есть проблема....
+    </div>
+
+    <div class="msg-teacher">
+      <span class="label">Учитель:</span> Учащийся принёс работу, которая оказалась списанной или ИИ написанной. Формально задание выполнено, но смысла в таком подходе нет — знания не проверены, умения не развиты
+    </div>
+
+    <div class="msg-ai">
+      <span class="label">ИИ:</span> Я предлагаю "Рерайт-терапию". Отправить обратно переписать работу, но уже своими словами. И пусть потом объяснит, почему именно так, а не иначе. Творческий подход, так сказать
+    </div>
+
+    <div class="msg-ai">
+      <span class="label">ИИ:</span> Но вообще-то надо сперва доказать факт несамостоятельного написания. И вот таким образом
+    </div>
+
+    <!-- Copy block with QuillBot card -->
+    <div class="copy-block">
+      <div>
+        <div class="copy-hint">Скопируй этот текст и попробуй</div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div class="copy-icon-box" onclick="copyText()" title="Копировать">📋</div>
+          <div class="copy-text">
+            Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие. Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="window.open('https://quillbot.com/ai-content-detector','_blank')" style="background:#28a745;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="background:white;color:#28a745;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;flex-shrink:0;">Q</span>
+          <span style="color:white;font-weight:bold;font-size:16px;">QuillBot</span>
+        </div>
+        <div style="font-size:11.5px;color:#d0f0d0;line-height:1.4;">AI Detector &amp; AI Checker — Detect ChatGPT, GPT-5 &amp; Gemini Text</div>
+        <div style="font-size:10.5px;color:#a8e6b8;margin-top:4px;">Free AI Detector — Use our AI checker to analyze text and identify content generated from ChatGPT 5, Gemini, Claude and other AI platforms.</div>
+        <span class="blink-hand" style="font-size:22px;margin-top:6px;display:block;">👆</span>
+      </div>
+    </div>
+
+    <div class="continue-wrapper">
+      <a href="#" class="start-btn" onclick="showPage('page1'); return false;">Начало</a>
+      <a href="#" class="continue-btn" onclick="showPage('page8'); return false;">Продолжение</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 8: Plagiat.AI форма ==================== -->
+<div id="page8" class="page">
+  <div class="container">
+    <div class="plagiat-wrapper">
+      <div class="plagiat-header">
+        <div class="plagiat-logo">
+          <div class="plagiat-dot"></div>
+          Plagiat.AI
+        </div>
+        <div class="plagiat-counter">
+          <div class="num">475411</div>
+          <div class="sub">проверено текстов</div>
+        </div>
+      </div>
+
+      <div class="plagiat-body">
+        <div class="plagiat-left">
+          <div class="plagiat-hint">Проверим этот текст и на наличие плагиата</div>
+          <div class="plagiat-big-title">Plagiat AI — бесплатная онлайн проверка на антиплагиат больших файлов <span>нейросетью</span></div>
+          <div class="plagiat-small-text" style="margin-top:10px;">Полностью бесплатный антиплагиат — Plagiat.AI, позволит проверить уникальность больших документов онлайн без ограничений. Анализ уникальности текста с помощью передовых нейросетей и ИИ, дополнительный поиск некачественного перефразирования и сгенерированного контента.</div>
+        </div>
+
+        <div class="plagiat-right">
+          <textarea class="plagiat-textarea" readonly>Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие. Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.</textarea>
+
+          <div class="plagiat-actions">
+            <button class="plagiat-btn-file">Выберите файл</button>
+            <button class="plagiat-btn-check" onclick="showPage('page9')">
+              Проверить
+              <span class="blink-hand" style="font-size:20px; vertical-align:middle;">👆</span>
+            </button>
+            <span class="plagiat-word-count">Символов: 0 | Слов: 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="continue-wrapper-right">
+      <a href="#" class="start-btn" onclick="showPage('page1'); return false;">На главную</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== СТРАНИЦА 9: Plagiat.AI результат ==================== -->
+<div id="page9" class="page">
+  <div class="container">
+    <div class="result-wrapper">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:15px; margin-bottom:20px;">
+        <div class="result-title">Результаты проверки текста на оригинальность</div>
+        <div class="result-logo">
+          <div class="plagiat-dot" style="width:20px;height:20px;"></div>
+          Plagiat.AI
+        </div>
+      </div>
+
+      <div class="result-stats-grid">
+        <div class="result-stat-item">
+          <label>Оригинальность</label>
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner green" style="width:6%;"></div>
+          </div>
+          <div class="progress-val">6%</div>
+        </div>
+
+        <div class="result-stat-item">
+          <label>Заимствования</label>
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner purple" style="width:94%;"></div>
+          </div>
+          <div class="progress-val">94%</div>
+        </div>
+
+        <div class="result-stat-item">
+          <label>Цитирование</label>
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner gray" style="width:0%;"></div>
+          </div>
+          <div class="progress-val">0%</div>
+        </div>
+
+        <div class="result-stat-item">
+          <label>Самоцитирование</label>
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner gray" style="width:0%;"></div>
+          </div>
+          <div class="progress-val">0%</div>
+        </div>
+      </div>
+
+      <div class="ai-check-section">
+        <div class="ai-check-label">Проверка на ИИ: Оценка вероятности написания текста человеком / сгенерированного нейросетью</div>
+        <div class="ai-bar-outer">
+          <div class="ai-bar-human" style="width:87%;">Человек: 87%</div>
+          <div class="ai-bar-ai" style="width:13%;">ИИ: 13%</div>
+        </div>
+      </div>
+
+      <div class="sources-section">
+        <div class="sources-title">Список источников:</div>
+        <table class="sources-table">
+          <tr>
+            <td>https://son-net.info/sovremennye-texnologii-obrazovaniya-lic-s-ovz/</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://epp.genproc.gov.ru/ru/web/proc_56/activity/legal-education/explain?item=73084573</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://www.investinregions.ru/regions/15/statistics/</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://base.garant.ru/181762/</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>http://www.consultant.ru/document/cons_doc_LAW_28399/a4d26fe6022253f9f9e396e9ca6f63c80946702f/</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://nsportal.ru/nachalnaya-shkola/distantsionnoe-obuchenie/2022/02/18/distantsionnye-obrazovatelnye-tehnologii-v</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://bazanpa.ru/fz-ob-obrazovanii-v-rf/glava11/statya83/</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://ssuwt.ru/metod-rek-prep-inv</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>https://nsportal.ru/nachalnaya-shkola/raznoe/2020/12/09/distantsionnye-obrazovatelnye/</td>
+            <td>Интернет Free</td>
+          </tr>
+          <tr>
+            <td>http://www.consultant.ru/document/cons_doc_LAW_60/08c0a4f60e87ae48c6af44637b02b0713d73d8e4/</td>
+            <td>Интернет Free</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="result-text-section">
+        <div class="result-text-label">Текст:</div>
+        <div class="result-text-body">
+          <span class="highlighted-purple">Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие.</span> Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.
+        </div>
+      </div>
+    </div>
+
+    <div class="continue-wrapper-right">
+      <a href="#" class="try-btn" onclick="showPage('page1'); return false;">Попробовать</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== Фиксированная кнопка «На главную» ==================== -->
+<a id="homeBtn" href="#" style="
+  position: fixed; bottom: 20px; left: 20px;
+  display: none;
+  padding: 12px 25px;
+  background: #7c4dff;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  font-size: 14px;
+" onclick="showPage('page1'); return false;">🏠 На главную</a>
+
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  document.getElementById(pageId).classList.add('active');
+  window.scrollTo(0, 0);
+
+  var homeBtn = document.getElementById('homeBtn');
+  homeBtn.style.display = (pageId === 'page1') ? 'none' : 'inline-block';
+}
+
+function copyText() {
+  var text = 'Живые организмы — это существа, способные к росту, размножению, обмену веществ и реакции на окружающую среду. Они делятся на растения, животных, грибы, бактерии и простейших, образуя биосферу Земли. Живые организмы обмениваются веществами с окружающей средой, поддерживая внутреннее равновесие. Они адаптируются к изменениям, эволюционируют и взаимодействуют друг с другом, формируя сложные экосистемы.';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('Текст скопирован!');
+    });
+  }
+}
+
+document.getElementById('homeBtn').style.display = 'none';
+</script>
+
+</body>
+</html>
